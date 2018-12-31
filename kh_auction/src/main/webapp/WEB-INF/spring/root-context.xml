@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<bean class="org.apache.commons.dbcp.BasicDataSource" 
+	      id="dataSource" 
+	      destroy-method="close"> 
+      <property name="driverClassName" 
+                value="oracle.jdbc.driver.OracleDriver" />
+	  <property name="url" 
+	            value="jdbc:oracle:thin:@localhost:1521:xe" />
+	  <property name="username" value="scott" />
+	  <property name="password" value="tiger" />
+   </bean>
+    
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" 
+          id="sqlSession">
+     <property name="dataSource"     ref="dataSource"/>
+     <property name="configLocation" 
+               value="classpath:util/SqlMapConfig.xml"/> 
+    </bean>
+    
+    <!-- SqlSessionTemplate은 필요한 시점에 세션을 닫고 커밋하거나 
+                 롤백하는것을 포함한 세션의 생명주기를 관리합니다. -->
+     <bean class="org.mybatis.spring.SqlSessionTemplate"
+           id="sqlSessionTemplate">
+        <constructor-arg ref="sqlSession" index="0"/>
+    </bean>
+    
+    <!--
+		빈의 이름이 정해져있다.
+		여기서 빈의 id/class 등이 틀리게되면 오류가 발생하므로 유의한다.
+    -->
+    <bean id = "multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    	<property name = "maxUploadSize" value="10485760" />
+    	<!-- 1024*1024*10 bytes : 10MB = 10485760 -->
+    </bean>
+<!--
+	maxUploadSize : 한 번의 Request로 전달될 수 있는 최대의 크기를 의미한다.
+	name="maxUploadSize"를 지정하지 않으면 기본으로 "-1"이 설정되는데 파일 크기가 지정될 경우 그 값은 최대 업로드 가능한 바이트 크기이며,
+	-1은 제한이 없음을 의미한다. 기본값은 -1이다.
+-->
+   
+</beans>
