@@ -1,41 +1,48 @@
 jQuery(function($) {
-	
-	
+
 	
 	$('.start_date').on('change',function(){
 		
 		var q = new Date();
 		var m = q.getMonth()+1;
-		var d = q.getDay();
+		var d = q.getDate();
 		var y = q.getFullYear();
 		var tt = q.getHours();
 		var mm = q.getMinutes();
-		var date = new Date(y,m,d);
-		
-		alert('susd'+y+'-'+m+'-'+d+'-'+tt+'-'+mm);
-		
+		var sss = y+'-';
+		if(m<10) sss +=0;
+		sss+= m+'-'+d
+		var date = new Date(sss);
 		var input_date = new Date($('#auc_start1').val());
 		
-		alert($('#auc_start1').val());
-		alert(date);
-		alert(date<input_date);
-		
-		if(input_date != null && date<input_date){
+		if(input_date != null && input_date-date<0){
 			alert("과거 날짜는 설정할 수 없습니다.");
-			$('#auc_start1').val(date);
-		} else if(date=input_date){
+			$('#auc_start1').val(sss);
+		} else if(date-input_date==0){
 			if(tt>$('#s_hour').val()){
 				alert("현재시간 이후로 설정합니다.");
-				$('#s_hour').val($('#s_hour').val()+1)
+				$('#s_hour').val(tt+1)
 			}
 		}
-		 
 	});
 	
+	//종료일 설정
+	$('#e_date').val('1');
+	$('.end_date').on('change',function(){
+		if($('#e_date').val()==0 && $('#e_hour').val()==0 && $('#e_min').val()==0){
+			alert('경매시간은 0이 될 수 없습니다.');
+			$('#e_date').val('1');
+			$('#e_hour').val('0');
+			$('#e_min').val('0');
+		}
+	});
+	
+	//사용자 검색
 	$('#con_id').on('keyup',function(){
 		selectUser($(this).serialize());
 	});
 	
+	//택배비
 	$('#method_price').prop('disabled',true);
 	$('#for_guarantee_info').css('display','none');
 	
@@ -87,21 +94,6 @@ jQuery(function($) {
 	});
 	
 	sameday=false;
-	
-	$('#auc_start1').on('change',function(){
-		var today = new Date();
-		var indate1 = new Date($('#auc_start1').val());
-		var indate2 = new Date($('#auc_start2').val());
-		alert('현재시간'+today);
-		alert(indate1+indate2);
-		alert(today>indate1+indate2);
-		if(today >= indate){
-			if(today > indate) {
-				dateadj($('#auc_start1'),today);
-			}
-			sameday=true;
-		}else sameday=false;
-	});
 	
 	//택배비 입력가능/불가
 	$('#trade3').on('change',function(){
@@ -169,14 +161,6 @@ jQuery(function($) {
 		$('#user_info').val();
 	});
 });
-
-
-function dateadj($dateform,date){
-	alert('과거 시간은 설정할 수 없습니다.');
-	alert($($dateform).val());
-	alert(date);
-	$($dateform).val(date);
-}
 
 function num_to_kor($input_money){
 	var korstart = $($input_money).val().replace(/1/g,'일')
@@ -258,7 +242,7 @@ function selectUser(user_id) {
 				}
 				else {
 					output += 
-						'<span style="color:red;">'+
+						'<span style="color:red;">'+user_id+
 						'해당하는 사용자가 없습니다.</span>';
 				}
 				$('#user_info').empty().append(output);

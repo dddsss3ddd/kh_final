@@ -40,9 +40,44 @@
                     <p style="margin-left:40px;">(el식 날짜)에 정기 경매가 예정되어있습니다. <br>출품 경매 수 : (el식)</p>
                     <div style="text-align:center;margin-bottom:10px;"><a href="#" class="btn btn-common">상세보기</a></div>
                 </div>
-                <div id="home_slide_auc" class="img-responsive slider-house">여기서 정기경매 이미지를 띄웁니다. 여기 배경색을 없애주세요. 이미지는 슬라이드로 자동으로 넘어갑시다.</div>
-
-                
+                <div id="home_slide_auc" class="img-responsive slider-house">
+	                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+	                    <ol class="carousel-indicators visible-xs">
+	                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+	                        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+	                        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+	                    </ol>
+	                    <div class="carousel-inner">
+	                        <div class="item active">
+	                            <img src="http://placehold.it/1140x487/green" alt="">
+	                            <div class="carousel-caption">
+	                                <h3>First slide label</h3>
+	                                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+	                            </div>
+	                        </div>
+	                        <div class="item">
+	                            <img src="http://placehold.it/1140x487/blue" alt="">
+	                            <div class="carousel-caption">
+	                                <h3>Second slide label</h3>
+	                                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+	                            </div>
+	                        </div>
+	                        <div class="item">
+	                            <img src="http://placehold.it/1140x487/red" alt="">
+	                            <div class="carousel-caption">
+	                                <h3>Third slide label</h3>
+	                                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <a class="left carousel-control hidden-xs" href="#carousel-example-generic" data-slide="prev">
+	                        <span class="glyphicon glyphicon-chevron-left"></span>
+	                    </a>
+	                    <a class="right carousel-control hidden-xs" href="#carousel-example-generic" data-slide="next">
+	                        <span class="glyphicon glyphicon-chevron-right"></span>
+	                    </a>
+	                </div><!--/#carousel-example-generic-->
+                </div>
             </div>
         </div>
         <div class="preloader"><i class="fa fa-sun-o fa-spin"></i></div>

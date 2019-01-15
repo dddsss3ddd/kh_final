@@ -64,7 +64,7 @@
                             <li><a href="auction_upload.hh">Portfolio Details</a></li>
                         </ul>
                     </li>                         
-                    <li><a href="jsp/main/shortcodes.jsp ">Shortcodes</a></li>                    
+                    <li><a href="FAQ.hh">FAQ</a></li>                    
                 </ul>
             </div>
             <div class="search">

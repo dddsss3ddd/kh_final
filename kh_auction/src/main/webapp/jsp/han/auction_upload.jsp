@@ -127,17 +127,17 @@
                        				</select>분
                        			</td>
                        			<td>
-                       				<select name="e_date" class="end_date" required>
-                       					<c:forEach begin="0" end="6" var="temp_var">
+                       				<select name="e_date" id="e_date" class="end_date" required>
+                       					<c:forEach begin="0" end="6" var="temp_var" >
 	                       					<option value="${temp_var}">${temp_var}</option>
                        					</c:forEach>
                        				</select>일
-                       				<select name="e_hour" class="end_date" required>
+                       				<select name="e_hour" id="e_hour" class="end_date" required>
                        					<c:forEach begin="0" end="23" var="temp_var">
                        						<option value="${temp_var}">${temp_var}</option>
                        					</c:forEach>
                        				</select>시&nbsp;&nbsp;
-                       				<select name="e_min" class="end_date" required>
+                       				<select name="e_min" id="e_min" class="end_date" required>
                        					<c:forEach begin="0" end="59" var="temp_var">
                        						<option value="${temp_var}">${temp_var}</option>
                        					</c:forEach>
