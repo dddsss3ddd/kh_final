@@ -10,6 +10,10 @@
 		</layout>
 	</appender>
 	
+	<logger name="Han"><!-- 이곳은 namespace를 적어준다. -->
+		<level value="trace" />
+	</logger>
+	
 	<!-- Application Loggers -->
 	<logger name="com.kh.auction">
 		<level value="info" />

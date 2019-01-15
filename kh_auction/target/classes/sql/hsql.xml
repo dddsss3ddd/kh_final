@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Han">
+
+	<insert id="t_in" parameterType="hbean">
+		insert into test values(#{hval1},#{hval2})
+	</insert>
+
+	<insert id="insertAuc" parameterType="abean">
+		insert into auction_item(
+		auc_no,
+		user_id,auc_info1,auc_info2,auc_title,
+		auc_img1,auc_img2,auc_content,guarantee,
+		guarantee_info, auc_price, auc_interval,
+		auc_add, auc_start, auc_end, method, method_price
+		)
+		values(
+		auction_item_no_seq.nextval,
+		#{user_id},#{auc_info1},#{auc_info2},#{auc_title},
+		#{auc_img1},#{auc_img2},#{auc_content},#{guarantee},
+		#{guarantee_info}, #{auc_price}, #{auc_interval},
+		sysdate,
+		<if test="auto_date_s != null and auto_date_e != null ">
+			sysdate,
+			sysdate+1
+		</if>
+		<if test="auto_date_s == null and auto_date_e != null">
+			TO_DATE(#{auc_start},'yyyy/mm/dd hh24:mi:ss'),
+			TO_DATE(#{auc_start},'yyyy/mm/dd hh24:mi:ss')+1
+		</if> 
+		<if test="auto_date_s != null and auto_date_e == null">
+			sysdate,
+			sysdate+#{e_date}+#{e_hour}/24+#{e_min}/24/60
+		</if> 
+		<if test="auto_date_s == null and auto_date_e == null">
+			TO_DATE(#{auc_start},'yyyy/mm/dd hh24:mi:ss'),
+			TO_DATE(#{auc_start},'yyyy/mm/dd hh24:mi:ss')+#{e_date}+#{e_hour}/24+#{e_min}/24/60
+		</if>
+		,
+		#{method}, #{method_price}
+		)
+	</insert>
+	
+	<select id="getdate" resultType="string">
+		Select sysdate from dual
+	</select>
+	
+	<select id="getconfuser" parameterType="string" resultType="string">
+		select user_id from join001 where user_id=#{user_id}
+	</select>
+
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+
+각자 필요한 bean 생성은 자유롭게 하되 첫 글자는 반드시 자신의 이름 첫 알파벳을 사용하세요.
+예시로 만들어놓은 빈처럼 생성하시면 됩니다.
+
+각자 sql xml 파일의 mapper name space는 본인의 성으로 하였습니다.
+쿼리 호출시 
+sqlSession.selectOne("Choi.board_det",board_num);
+이와같이 쿼리 호출해주세요.
+
+ -->

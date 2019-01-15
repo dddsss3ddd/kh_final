@@ -7,7 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.auction.model.BbsBean;
+import com.kh.auction.model.BbsBean_sample;
 /*
 @Component를 이용해서 스프링 컨테이너가 해당 클래스 객체를 생성하도록 설정할 수 있지만
 모든 클래스에 @Component를 할당하면 어떤 클래스가 어떤 역활을 수행하는지 파악하기
@@ -20,12 +20,12 @@ import com.kh.auction.model.BbsBean;
 
  */
 @Repository
-public class BbsDAOImpl {
+public class BbsDAOImpl_sample {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
 	//자료실 저장
-	public void insertBbs(BbsBean bbsbean) throws Exception{
+	public void insertBbs(BbsBean_sample bbsbean) throws Exception{
 		sqlSession.insert("bbs_insert",bbsbean);
 	}
 	
@@ -35,13 +35,13 @@ public class BbsDAOImpl {
 		return count;
 	}
 	
-	public List<BbsBean> getBbsList(int page) throws Exception {
-		List<BbsBean> list=sqlSession.selectList("bbs_list",page);
+	public List<BbsBean_sample> getBbsList(int page) throws Exception {
+		List<BbsBean_sample> list=sqlSession.selectList("bbs_list",page);
 		return list;
 	}
 
 
-	public BbsBean getBbsCont(int num) throws Exception {
+	public BbsBean_sample getBbsCont(int num) throws Exception {
 		return sqlSession.selectOne("bbs_cont",num);
 	}
 
@@ -49,7 +49,7 @@ public class BbsDAOImpl {
 		sqlSession.update("bbs_hit",num);
 	}
 
-	public void editBbs(BbsBean bbsbean) throws Exception {
+	public void editBbs(BbsBean_sample bbsbean) throws Exception {
 		
 		
 	}
@@ -64,17 +64,17 @@ public class BbsDAOImpl {
 		return 0;
 	}
 
-	public List<BbsBean> getBbsList3(Map m) throws Exception {
+	public List<BbsBean_sample> getBbsList3(Map m) throws Exception {
 		
 		return null;
 	}
 
-	public void refEdit(BbsBean bbsbean) throws Exception {
+	public void refEdit(BbsBean_sample bbsbean) throws Exception {
 		
 		
 	}
 
-	public void bbsReplyOk(BbsBean bbsbean) throws Exception {
+	public void bbsReplyOk(BbsBean_sample bbsbean) throws Exception {
 		
 	}
 }

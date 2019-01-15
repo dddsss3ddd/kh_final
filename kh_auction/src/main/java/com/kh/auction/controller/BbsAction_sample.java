@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.auction.dao.BbsService;
-import com.kh.auction.model.BbsBean;
+import com.kh.auction.dao.BbsService_sample;
+import com.kh.auction.model.BbsBean_sample;
 
-@Controller
-public class BbsAction3 {
+
+public class BbsAction_sample {
 	
-	@Autowired
-	private BbsService bbsService;
+
+	private BbsService_sample bbsService;
 	
 	private String saveFolder="D:\\spring_work\\Spring6_MVC_Bbs\\src\\main\\webapp\\resources\\upload";
 	
@@ -32,7 +32,7 @@ public class BbsAction3 {
 	}
 	
 	@RequestMapping(value="/bbs_write_ok.nhn",method=RequestMethod.POST)
-	public String bbs_write_ok(BbsBean bbsbean) throws Exception{
+	public String bbs_write_ok(BbsBean_sample bbsbean) throws Exception{
 		MultipartFile uploadfile=bbsbean.getUploadfile();
 		
 		if(!uploadfile.isEmpty()) {
@@ -111,7 +111,7 @@ public class BbsAction3 {
 public ModelAndView bbs_list(@RequestParam(value="page",defaultValue="1") int page) throws Exception{
 		
 		System.out.println(page);
-		List<BbsBean> bbslist=new ArrayList<BbsBean>();
+		List<BbsBean_sample> bbslist=new ArrayList<BbsBean_sample>();
 		
 		//초기화
 		int limit=10; //한 화면에 출력할 레코드 갯수
@@ -154,7 +154,7 @@ public ModelAndView bbs_list(@RequestParam(value="page",defaultValue="1") int pa
 			 bbsService.bbsHit(bbs_num);
 		 }
 	 
-		 BbsBean bbs=bbsService.getBbsCont(bbs_num);
+		 BbsBean_sample bbs=bbsService.getBbsCont(bbs_num);
 	 
 		 ModelAndView contM=new ModelAndView();
 		 contM.addObject("bcont",bbs);

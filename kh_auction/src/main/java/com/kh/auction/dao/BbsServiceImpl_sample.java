@@ -6,22 +6,22 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.auction.model.BbsBean;
+import com.kh.auction.model.BbsBean_sample;
 
 @Service("boardService")
-public class BbsServiceImpl implements BbsService{
+public class BbsServiceImpl_sample implements BbsService_sample{
 	/*
 	3개의 DAO 파일이 있을때, 각자 해당되는 DAO 파일을 가져오기 위해 @Repository를 붙여주면 된다.
 	이렇게 DAO 파일이 바뀌어도 여기서 메소드는 건드리지 않고 클래스 명만 바꾸어 주도록 한다.
 	 */
 	
 	@Autowired
-	private BbsDAOImpl bbsDAO;
+	private BbsDAOImpl_sample bbsDAO;
 	//private BbsDAOImpol_old bbsDAO;
 	//private BbsDAO_jdbc bbsDAO;
 	
 	@Override
-	public void insertBbs(BbsBean bbsbean) throws Exception {
+	public void insertBbs(BbsBean_sample bbsbean) throws Exception {
 		// TODO Auto-generated method stub
 		bbsDAO.insertBbs(bbsbean);
 	}
@@ -33,13 +33,13 @@ public class BbsServiceImpl implements BbsService{
 	}
 
 	@Override
-	public List<BbsBean> getBbsList(int page) throws Exception {
+	public List<BbsBean_sample> getBbsList(int page) throws Exception {
 		
 		return bbsDAO.getBbsList(page);
 	}
 
 	@Override
-	public BbsBean getBbsCont(int num) throws Exception {
+	public BbsBean_sample getBbsCont(int num) throws Exception {
 		return bbsDAO.getBbsCont(num);
 	}
 
@@ -49,7 +49,7 @@ public class BbsServiceImpl implements BbsService{
 	}
 
 	@Override
-	public void editBbs(BbsBean bbsbean) throws Exception {
+	public void editBbs(BbsBean_sample bbsbean) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
@@ -67,19 +67,19 @@ public class BbsServiceImpl implements BbsService{
 	}
 
 	@Override
-	public List<BbsBean> getBbsList3(Map m) throws Exception {
+	public List<BbsBean_sample> getBbsList3(Map m) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void refEdit(BbsBean bbsbean) throws Exception {
+	public void refEdit(BbsBean_sample bbsbean) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void bbsReplyOk(BbsBean bbsbean) throws Exception {
+	public void bbsReplyOk(BbsBean_sample bbsbean) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

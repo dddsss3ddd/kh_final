@@ -2,7 +2,7 @@ package com.kh.auction.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class BbsBean {
+public class BbsBean_sample {
 	private int bbs_num;
 	private String bbs_name;
 	private String bbs_pass;
