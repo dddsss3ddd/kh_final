@@ -250,9 +250,12 @@ public class HAction {
 		return mv;
 	}
 	
-	//cons_details.hh
-	
-	
+	@RequestMapping(value="cons_write.hh")
+	public ModelAndView cons_write (
+			) throws Exception {
+		ModelAndView mv = new ModelAndView("han/cons_write");
+		return mv;
+	}
 	
 	
 	

@@ -57,7 +57,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <div class="img-responsive sample_view">여기는 이미지가 미리 보입니다.</div>
+                    <div class="img-responsive sample_view" style="overflow:auto;">여기는 이미지가 미리 보입니다.</div>
                     <div class="live-preview" style="text-align:center;">
                     	<div ><h3>Drop Images below.</h3>
                         	<input multiple="multiple"  type="file" name="auc_img" class="img_up" id="img_up"/>

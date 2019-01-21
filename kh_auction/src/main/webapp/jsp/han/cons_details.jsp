@@ -92,7 +92,7 @@
                                     	</table>
                                     </div>
                                     <div class="blog-share">
-                                        <button>내용 수정하기</button>
+                                        <button class="btn btn-lg btn-warning">내용 수정하기</button>
                                     </div>
                                     <br><br>
                                     <div class="response-area">
@@ -120,7 +120,7 @@
                                                         </a>
                                                         <div class="media-body">
                                                             <span><i class="fa fa-user"></i>Posted by <a href="jsp/main/#">댓글 래벨은 1단계로만</a></span>
-                                                            <p>이미지를 올리게 할 것인가 말 것인가? </p>
+                                                            <p>이미지를 올리게 할 것인가 말 것인가?, 이미지는 그림자 이미지로 한다. </p>
                                                             <ul class="nav navbar-nav post-nav">
                                                                 <li><a href="jsp/main/#"><i class="fa fa-clock-o"></i>February 11,2014</a></li>
                                                             </ul>
@@ -157,12 +157,12 @@
                         <div class="sidebar-item  recent">
                             <h3>감정 날짜 선택</h3>
                             <table style="width:100%;"><tr>
-                            <td style="width:33%;"><button style="width:100%;"class="btn btn-lg btn-info">이전</button></td>
-                            <td style="width:34%;"><button style="width:100%;"class="btn btn-lg btn-info">현재</button></td>
-                            <td><button style="width:100%;" class="btn btn-lg btn-info">다음</button></td>
+                            <td style="width:33%;"><button style="width:100%;" class="btn btn-info">이전</button></td>
+                            <td style="width:34%;"><button style="width:100%;" class="btn btn-info">현재</button></td>
+                            <td><button style="width:100%;" class="btn btn-info">다음</button></td>
                             </tr></table><br>
                             <table style="width:100%;">
-                            	<tr><td colspan="7" style="text-align:center;font-size:20px;">2019년</td></tr>
+                            	<tr><td colspan="7" style="text-align:center;font-size:20px;">2019년 1월</td></tr>
                             	<tr>
                             		<td style="font-size:30px;">1</td><td style="font-size:30px;">1</td><td style="font-size:30px;">1</td><td style="font-size:30px;">1</td><td style="font-size:30px;">1</td><td style="font-size:30px;">1</td><td style="font-size:30px;">1</td>
                             	</tr>
@@ -217,6 +217,8 @@
                         <div class="sidebar-item popular">
                             <h3>nth 정기 경매에 등록합니다.</h3>
                             <p>시작가:1000000000</p>
+                            <p>한글 숫자 표시</p>
+                            <p>단위:1000000000</p>
                             <p>한글 숫자 표시</p>
                             <button style="width:100%;" class="btn btn-lg btn-success">위탁 경매 승인</button>
                         </div>

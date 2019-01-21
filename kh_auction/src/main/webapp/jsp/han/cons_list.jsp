@@ -45,7 +45,7 @@
 	                            		background-color:#0089ff;
 	                            		font-size:30px; margin-right:80px;
 	                            		border:0;font-weight:bold;color:white;
-	                            		border-radius:20px;">위탁 신청하기</button>
+	                            		border-radius:20px;" onclick="location.href='cons_write.hh';">위탁 신청하기</button>
                        		</div>
                         </div>
                     </div>
