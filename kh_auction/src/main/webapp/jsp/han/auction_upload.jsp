@@ -187,21 +187,7 @@
     </section>
     <!--/#related-work-->
 </form>
-    <footer id="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 text-center bottom-separator">
-                    <img src="resources/images/home/under.png" class="img-responsive inline" alt="">
-                </div>
-                <div class="col-sm-12">
-                    <div class="copyright-text text-center">
-                        <p>&copy; KH Auction 2019. All Rights Reserved.</p>
-                        <p>Designed by <a target="_blank" href="http://www.themeum.com">KH_Acution</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <jsp:include page="../../footer.jsp"/>
     <!--/#footer-->
     <script type="text/javascript" src="resources/js/jquery.js"></script>
     <script type="text/javascript" src="resources/js/bootstrap.min.js"></script>

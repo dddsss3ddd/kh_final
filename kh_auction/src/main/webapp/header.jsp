@@ -48,10 +48,10 @@
                         <ul role="menu" class="sub-menu">
                             <li><a href="jsp/main/blog.jsp">Blog Default</a></li>
                             <li><a href="jsp/main/blogtwo.jsp">Timeline Blog</a></li>
-                            <li><a href="jsp/main/blogone.jsp">2 Columns + Right Sidebar</a></li>
+                            <li><a href="cons_list.hh">2 Columns + Right Sidebar</a></li>
                             <li><a href="jsp/main/blogthree.jsp">1 Column + Left Sidebar</a></li>
                             <li><a href="jsp/main/blogfour.jsp">Blog Masonary</a></li>
-                            <li><a href="jsp/main/blogdetails.jsp">Blog Details</a></li>
+                            <li><a href="cons_details.hh">Cons Details</a></li>
                         </ul>
                     </li>
                     <li class="dropdown"><a href="jsp/main/portfolio.jsp">Portfolio <i class="fa fa-angle-down"></i></a>

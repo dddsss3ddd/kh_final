@@ -32,6 +32,27 @@
 	<!-- 서블릿에서 값을 받아 post방식으로 넘어올 경우
 	     request.setCharacterEncoding("UTF-8") 없어도 한글 안깨집니다. -->
 <!-- 필터 추가 끝 -->
+	
+	<!-- https 추가 -->
+	<security-constraint>
+    <web-resource-collection>
+        <web-resource-name>SSL Forward</web-resource-name>
+	        <url-pattern>/*</url-pattern>
+	    </web-resource-collection>
+	    <user-data-constraint>
+	        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+	    </user-data-constraint>
+	</security-constraint>
+	<!-- https css 및 이미지 처리 -->
+	<security-constraint>
+	    <web-resource-collection>
+	        <web-resource-name>HTTPS or HTTP</web-resource-name>
+	        <url-pattern>/resources/*</url-pattern>
+	    </web-resource-collection>
+	    <user-data-constraint>
+	        <transport-guarantee>NONE</transport-guarantee>
+	    </user-data-constraint>
+	</security-constraint>
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>

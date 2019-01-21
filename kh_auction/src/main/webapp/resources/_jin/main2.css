@@ -121,6 +121,7 @@
 
   .padding-top{
     padding-top: 90px;
+    padding-left:115px;
   }
 
   .padding-right{
@@ -1670,10 +1671,6 @@ Blog with right sidebar
 
 .post-nav li a:hover{
   background: none;
-}
-
-.blog-padding-right{
-  padding-right:35px;
 }
 
 .blog-pagination {

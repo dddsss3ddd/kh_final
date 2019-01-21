@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.auction.dao.HService;
 import com.kh.auction.model.BbsBean_sample;
@@ -160,7 +161,8 @@ public class HAction {
 		ab.setAuc_start(ab.getAuc_start1()+" "+ab.getS_hour()+":"+ab.getS_min()+":00");
 
 		SimpleDateFormat dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date auc_start=dateform.parse(ab.getAuc_start());
+		Date auc_start= new Date();
+		if(ab.getAuto_date_s() ==null) auc_start = dateform.parse(ab.getAuc_start());
 		Date auc_system=dateform.parse(hService.getdate());
 
 		if(auc_start.compareTo(auc_system)==-1) {
@@ -223,8 +225,54 @@ public class HAction {
 		File thumbFile = new File(thumbName);
 		ImageIO.write(destImg, fileExt.toUpperCase(), thumbFile);
 		
-		return "resources/upload/thumbnail/T_"+fileName+"."+fileExt.toUpperCase();
+		return "resources/upload/thumbnail/T_"+fileName+"."+fileExt;
 	}
+	//==============================================================이상은 옮김으로 가능한 수정하지 말것.
+	
+	
+	@RequestMapping(value="FAQ.hh")
+	public String faq (
+			) throws Exception {
+		return "han/FAQ";
+	}
+	
+	@RequestMapping(value="cons_list.hh")
+	public ModelAndView cons_list (
+			) throws Exception {
+		ModelAndView mv = new ModelAndView("han/cons_list");
+		return mv;
+	}
+	
+	@RequestMapping(value="cons_details.hh")
+	public ModelAndView cons_details (
+			) throws Exception {
+		ModelAndView mv = new ModelAndView("han/cons_details");
+		return mv;
+	}
+	
+	//cons_details.hh
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 

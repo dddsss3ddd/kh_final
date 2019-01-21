@@ -114,11 +114,12 @@ create table consignment(
 	gua_info		varchar2(1000), -- 보증서 정보
 	cons_price		number default 0,	-- 의뢰자 희망가 0이면 미정
 	cons_date		date,			-- 감정 신청 날짜
-	cons_result1	varchar2(30) check(cons_result1 in('accept','deny')),	-- 감정 신청 결과
+	cons_result1	varchar2(30) check(cons_result1 in('accept','deny','yet')) default 'yet',	-- 감정 신청 결과
 	cons_go_date	date, --감정방문 날짜 선택
-	cons_go_time	varchar2(300),	-- 감정방문 시간 선택
+	cons_go_time_f	number(3),	-- 감정방문 시간 선택 from
+	cons_go_time_t	number(3),	-- 감정방문 시간 선택 to
 	cons_go_content	varchar2(1000),	-- 감정방문 요구사항
-	cons_result2	varchar2(30) check(cons_result2 in('accept','deny')),	-- 위탁 승인 거부
+	cons_result2	varchar2(30) check(cons_result2 in('accept','deny','yet')) default 'yet',	-- 위탁 승인 거부
 	cons_ant_price	number, 			-- 예상가
 	cons_ans		varchar2(1000)	-- 감정결과 설명
 );
