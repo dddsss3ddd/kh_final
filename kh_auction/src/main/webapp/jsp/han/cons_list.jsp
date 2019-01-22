@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" 
            uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,200 +55,137 @@
         </div>
    </section>
     <!--/#action-->
-
+    
+    
+    
     <section id="blog" class="padding-top">
         <div class="container">
             <div class="row">
                 <div class="col-md-10">
-                	<ul id="tab1" class="nav nav-tabs">
-					    <li class="active"><a href="#" data-toggle="tab">전체 보기</a></li>
-					    <li><a href="#" data-toggle="tab">감정 검토중</a></li>
-					    <li><a href="#" data-toggle="tab">감정 진행중</a></li>
-					    <li><a href="#" data-toggle="tab">위탁절차 진행중</a></li>
-					    <li><a href="#" data-toggle="tab">위탁신청 완료</a></li>
-		    		</ul><br>
+                <c:choose>
+                	<c:when test="${user_grade == 'master' or user_grade=='admin'}">
+	                	<ul id="tab1" class="nav nav-tabs">
+						    <li class="active"><a href="#" data-toggle="tab">전체 보기</a></li>
+						    <li><a href="#" data-toggle="tab">감정 검토중</a></li>
+						    <li><a href="#" data-toggle="tab">감정 진행중</a></li>
+						    <li><a href="#" data-toggle="tab">위탁절차 진행중</a></li>
+						    <li><a href="#" data-toggle="tab">위탁신청 완료</a></li>
+			    		</ul>
+		    		</c:when>
+		    		<c:otherwise>
+			    		<ul id="tab1" class="nav nav-tabs">
+						    <li class="active"><a href="#" data-toggle="tab">전체 보기</a></li>
+						    <li><a href="#" data-toggle="tab">나의 위탁신청</a></li>
+			    		</ul>
+		    		</c:otherwise>
+		    	</c:choose>
+		    		<br>
                     <div class="row">
+                    <!-- 리스트 내용 시작 -->
+                    
+                    <!-- 
+                    <td><a href="jsp/main/#"><i class="fa fa-circle-o-notch fa-spin" style="color:#ff9800"></i> 검토중</a></td>
+                    
+                    <td><a href="jsp/main/#"><i class="fa fa-minus-square" style="color:red;"></i> 감정 불가</a></td>
+                    <td><a href="jsp/main/#"><i class="fa fa-check-square-o" style="color:green;"></i> 감정 승인</a></td>
+                    
+                    <td><a href="jsp/main/#"><i class="fa fa-circle-o-notch fa-spin" style="color:#ff9800"></i> 감정중</a></td>
+					<td><a href="jsp/main/#"><i class="fa fa-diamond" style="color:blue;"></i> 감정 완료</a></td>
+					
+                    <td><a href="jsp/main/#"><i class="fa fa-history" style="color:#ff9800"></i>진행 대기중</a></td>
+                    
+                    <td><a href="jsp/main/#"><i class="fa fa-minus-square" style="color:red;"></i> 위탁 불가</a></td>
+                    <td><a href="jsp/main/#"><i class="fa fa-star" style="color:#f5dc00;"></i> 위탁 완료</a></td>
+                     -->
+                    
+                    
+                    <!-- 단일 빈 -->
+                    <c:forEach var="bean" items="${cons_list}">
                          <div class="col-md-6 col-sm-12 blog-padding-right">
                             <div class="single-blog two-column">
                                 <div class="post-thumb">
-                                    <a href="jsp/main/blogdetails.jsp"><img src="resources/images/blog/timeline/1.jpg" class="img-responsive" alt=""></a>
-                                    <div class="post-overlay">
-                                        <span class="uppercase"><a href="jsp/main/#">14 <br><small>Feb</small></a></span>
-                                    </div>
+                                    <a href="cons_detail.hh?cons_no=${bean.cons_no}"><img src="${bean.cons_img1}" class="img-responsive" alt="${cons_title}"></a>
                                 </div>
                                 <div class="post-content overflow">
-                                    <h2 class="post-title bold"><a href="jsp/main/blogdetails.jsp">it is First</a></h2>
-                                    <h3 class="post-author"><a href="jsp/main/#">Posted by first</a></h3>
-                                    <div style="height:90px; overflow:hidden;">here is first contents in hendrerit in vulputate velit esse molestie coere is first contents in hendrerit in vulputate velit [...]</div>
-                                    <a href="jsp/main/#" class="read-more">View More</a>
+                                    <h2 class="post-title bold"><a href="cons_detail.hh?cons_no=${bean.cons_no}"><c:out value="${bean.cons_title}"/></a></h2>
+                                    <h3 class="post-author"><a href="#">Posted by <c:out value="${bean.cons_id}"/></a></h3>
+                                    <div style="height:90px; overflow:hidden;">
+                                    	<c:if test="${fn:length(bean.cons_id) le 100}">
+                                    		<c:out value="${bean.cons_id}"/>
+                                    	</c:if>
+                                    	<c:if test="${fn:length(bean.cons_id) gt 100}">
+                                    		<c:out value="${fn:substring(bean.cons_id,0,96)}"/><c:out value="[...]"/>
+                                    	</c:if>
+                                    </div>
+                                    <a href="cons_detail.hh?cons_no=${bean.cons_no}" class="read-more">View More</a>
                                     <div class="post-bottom overflow">
                                     <table style="width:100%;">
+                                    <c:choose>
+                                    	<c:when test="${bean.cons_result1 eq 'yet'}">
+	                                    	<tr>
+	                                    		<td><a href="#"><i class="fa fa-circle-o-notch fa-spin" style="color:#ff9800"></i> 검토중</a></td>
+	                                    		<td><a href="#"><i class="fa fa-history" style="color:#ff9800"></i>진행 대기중</a></td>
+	                                    		<td><a href="#"><i class="fa fa-history" style="color:#ff9800"></i>진행 대기중</a></td>
+	                                    	</tr>
+                                    	</c:when>
+                                    	<c:when test="${bean.cons_result1 eq 'deny'}">
+                                    		<tr>
+	                                    		<td><a href="#"><i class="fa fa-minus-square" style="color:red;"></i> 감정 불가</a></td>
+	                                    		<td><a href="#"><i class="fa fa-history" style="color:#ff9800"></i>진행 대기중</a></td>
+	                                    		<td><a href="#"><i class="fa fa-history" style="color:#ff9800"></i>진행 대기중</a></td>
+	                                    	</tr>
+                                    	</c:when>
+                                    	<c:otherwise>
+                                    		<tr>
+                                    			<td><a href="#"><i class="fa fa-check-square-o" style="color:green;"></i> 감정 승인</a></td>
+                                    		<c:choose>
+                                    			<c:when test="${bean.cons_result2 =='yet'}">
+		                                    		<td><a href="#"><i class="fa fa-circle-o-notch fa-spin" style="color:#ff9800"></i> 감정중</a></td>
+			                                    	<td><a href="#"><i class="fa fa-history" style="color:#ff9800"></i>진행 대기중</a></td>
+			                                    </c:when>
+			                                    <c:when test="${bean.cons_result2 =='deny'}">
+			                                    	<td><a href="#"><i class="fa fa-diamond" style="color:blue;"></i> 감정 완료</a></td>
+			                                    	<td><a href="#"><i class="fa fa-minus-square" style="color:red;"></i> 위탁 불가</a></td>
+			                                    </c:when>
+			                                    <c:otherwise>
+			                                    	<td><a href="#"><i class="fa fa-diamond" style="color:blue;"></i> 감정 완료</a></td>
+			                                    	<c:if test="${bean.cons_commit == 'yet'}">
+			                                    		<td><a href="#"><i class="fa fa-circle-o-notch fa-spin" style="color:#ff9800"></i> 승인 대기중</a></td>
+			                                    	</c:if>
+			                                    	<c:if test="${bean.cons_commit == 'no'}">
+			                                    		<td><a href="#"><i class="fa fa-minus-square" style="color:red;"></i> 위탁 불가</a></td>
+			                                    	</c:if>
+			                                    	<c:if test="${bean.cons_commit == 'yes'}">
+			                                    		<td><a href="#"><i class="fa fa-star" style="color:#f5dc00;"></i> 위탁 완료</a></td>
+			                                    	</c:if>
+			                                    </c:otherwise>
+	                                    	</c:choose>
+	                                    	</tr>
+                                    	</c:otherwise>
+                                    </c:choose>
                                     	<tr>
-                                    		<td><a href="jsp/main/#"><i class="fa fa-circle-o-notch fa-spin" style="color:#ff9800"></i> 검토중</a></td>
-                                    		<td><a href="jsp/main/#"><i class="fa fa-circle-o-notch fa-spin" style="color:#ff9800"></i> 감정중</a></td>
-                                    		<td><a href="jsp/main/#"><i class="fa fa-history" style="color:#ff9800"></i>진행 대기중</a></td>
-                                    	</tr>
-                                    	<tr>
-                                    		<td><a href="jsp/main/#"><i class="fa fa-calendar-o"></i> 2019.01.21</a></td>
-                                    		<td><a href="jsp/main/#"><i class="fa fa-calendar-o"></i> 2019.02.08</a></td>
-                                    		<td><a href="jsp/main/#"><i class="fa fa-comments"></i> 3 Comments</a></td>
-                                    	</tr>
+	                                    	<td><a href="#"><i class="fa fa-calendar-o" style="margin-right:55px;"></i><c:out value="${bean.cons_result1_date != null ? bean.cons_result1_date:'-'}"/></a></td>
+	                                    	<td><a href="#"><i class="fa fa-calendar-o" style="margin-right:55px;"></i><c:out value="${bean.cons_result2_date != null ? bean.cons_result1_date:'-'}"/></a></td>
+	                                    	<td><a href="#"><i class="fa fa-comments"></i> ${bean.comments_count} Comments</a></td>
+	                                    </tr>
                                     </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-12 blog-padding-right">
-                            <div class="single-blog two-column">
-                                <div class="post-thumb">
-                                    <a href="jsp/main/blogdetails.jsp"><img src="resources/images/blog/timeline/4.jpg" class="img-responsive" alt=""></a>
-                                    <div class="post-overlay">
-                                        <span class="uppercase"><a href="jsp/main/#">14 <br><small>Feb</small></a></span>
-                                    </div>
-                                </div>
-                                <div class="post-content overflow">
-                                    <h2 class="post-title bold"><a href="jsp/main/blogdetails.jsp">Advanced business cards design</a></h2>
-                                    <h3 class="post-author"><a href="jsp/main/#">Posted by micron News</a></h3>
-                                    <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]</p>
-                                    <a href="jsp/main/#" class="read-more">View More</a>
-                                    <div class="post-bottom overflow">
-                                        <table style="width:100%;">
-	                                    	<tr>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-check-square-o" style="color:green;"></i> 감정 승인</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-circle-o-notch fa-spin" style="color:#ff9800"></i> 감정중</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-star" style="color:#f5dc00;"></i> 위탁 완료</a></td>
-	                                    	</tr>
-	                                    	<tr>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-calendar-o" style="margin-right:55px;"></i>.</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-calendar-o" style="margin-right:55px;"></i>.</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-comments"></i>3 Comments</a></td>
-	                                    	</tr>
-                                    	</table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12 blog-padding-right">
-                            <div class="single-blog two-column">
-                                <div class="post-thumb">
-                                    <a href="jsp/main/blogdetails.jsp"><img src="resources/images/blog/timeline/5.jpg" class="img-responsive" alt=""></a>
-                                    <div class="post-overlay">
-                                        <span class="uppercase"><a href="jsp/main/#">14 <br><small>Feb</small></a></span>
-                                    </div>
-                                </div>
-                                <div class="post-content overflow">
-                                    <h2 class="post-title bold"><a href="jsp/main/blogdetails.jsp">Advanced business cards design</a></h2>
-                                    <h3 class="post-author"><a href="jsp/main/#">Posted by micron News</a></h3>
-                                    <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]</p>
-                                    <a href="jsp/main/#" class="read-more">View More</a>
-                                    <div class="post-bottom overflow">
-                                        <table style="width:100%;">
-	                                    	<tr>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-minus-square" style="color:red;"></i> 감정 불가</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-history" style="color:#ff9800"></i> 진행 대기중</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-history" style="color:#ff9800"></i> 진행 대기중</a></td>
-	                                    	</tr>
-	                                    	<tr>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-calendar-o"></i> 2019.01.05</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-calendar-o" style="margin-right:55px;"></i>.</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-comments"></i> 3 Comments</a></td>
-	                                    	</tr>
-                                    	</table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12 blog-padding-right">
-                            <div class="single-blog two-column">
-                                <div class="post-thumb">
-                                    <a href="jsp/main/blogdetails.jsp"><img src="resources/images/blog/timeline/6.jpg" class="img-responsive" alt=""></a>
-                                    <div class="post-overlay">
-                                        <span class="uppercase"><a href="jsp/main/#">14 <br><small>Feb</small></a></span>
-                                    </div>
-                                </div>
-                                <div class="post-content overflow">
-                                    <h2 class="post-title bold"><a href="jsp/main/blogdetails.jsp">Advanced business cards design</a></h2>
-                                    <h3 class="post-author"><a href="jsp/main/#">Posted by micron News</a></h3>
-                                    <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]</p>
-                                    <a href="jsp/main/#" class="read-more">View More</a>
-                                    <div class="post-bottom overflow">
-                                        
-                                        <table style="width:100%;">
-	                                    	<tr>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-check-square-o" style="color:green;"></i> 감정 승인</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-diamond" style="color:blue;"></i> 감정 완료</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-star" style="color:#f5dc00;"></i> 위탁 완료</a></td>
-	                                    	</tr>
-	                                    	<tr>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-calendar-o"></i> 2019.01.05</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-calendar-o"></i> 2019.01.21</a></td>
-	                                    		<td><a href="jsp/main/#"><i class="fa fa-comments"></i> 3 Comments</a></td>
-	                                    	</tr>
-                                    	</table>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12 blog-padding-right">
-                            <div class="single-blog two-column">
-                                <div class="post-thumb">
-                                    <a href="jsp/main/blogdetails.jsp"><img src="resources/images/blog/timeline/3.jpg" class="img-responsive" alt=""></a>
-                                    <div class="post-overlay">
-                                        <span class="uppercase"><a href="jsp/main/#">14 <br><small>Feb</small></a></span>
-                                    </div>
-                                </div>
-                                <div class="post-content overflow">
-                                    <h2 class="post-title bold"><a href="jsp/main/blogdetails.jsp">Advanced business cards design</a></h2>
-                                    <h3 class="post-author"><a href="jsp/main/#">Posted by micron News</a></h3>
-                                    <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]</p>
-                                    <a href="jsp/main/#" class="read-more">View More</a>
-                                    <div class="post-bottom overflow">
-                                        <ul class="nav nav-justified post-nav">
-                                            <li><a href="jsp/main/#"><i class="fa fa-tag"></i>Creative</a></li>
-                                            <li><a href="jsp/main/#"><i class="fa fa-heart"></i>32 Love</a></li>
-                                            <li><a href="jsp/main/#"><i class="fa fa-comments"></i>3 Comments</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                         <div class="col-md-6 col-sm-12 blog-padding-right">
-                            <div class="single-blog two-column">
-                                <div class="post-thumb">
-                                    <a href="jsp/main/blogdetails.jsp"><img src="resources/images/blog/timeline/2.jpg" class="img-responsive" alt=""></a>
-                                    <div class="post-overlay">
-                                        <span class="uppercase"><a href="jsp/main/#">14 <br><small>Feb</small></a></span>
-                                    </div>
-                                </div>
-                                <div class="post-content overflow">
-                                    <h2 class="post-title bold"><a href="jsp/main/blogdetails.jsp">Advanced business cards design</a></h2>
-                                    <h3 class="post-author"><a href="jsp/main/#">Posted by micron News</a></h3>
-                                    <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber [...]</p>
-                                    <a href="jsp/main/#" class="read-more">View More</a>
-                                    <div class="post-bottom overflow">
-                                        <ul class="nav nav-justified post-nav">
-                                            <li><a href="jsp/main/#"><i class="fa fa-tag"></i>Creative</a></li>
-                                            <li><a href="jsp/main/#"><i class="fa fa-heart"></i>32 Love</a></li>
-                                            <li><a href="jsp/main/#"><i class="fa fa-comments"></i>3 Comments</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </c:forEach>
+                    <!-- 단일 빈 종료 -->
+                    
+                    </div><!-- 리스트 내용 끝 -->
+                    
+                    <!-- 페이징 -->
                     <div class="blog-pagination">
                         <ul class="pagination">
-                          <li><a href="jsp/main/#">left</a></li>
-                          <li><a href="jsp/main/#">1</a></li>
-                          <li><a href="jsp/main/#">2</a></li>
-                          <li class="active"><a href="jsp/main/#">3</a></li>
-                          <li><a href="jsp/main/#">4</a></li>
-                          <li><a href="jsp/main/#">5</a></li>
-                          <li><a href="jsp/main/#">6</a></li>
-                          <li><a href="jsp/main/#">7</a></li>
-                          <li><a href="jsp/main/#">8</a></li>
-                          <li><a href="jsp/main/#">9</a></li>
+                          <li><a href="#">left</a></li>
+                          <li class="active"><a href="#">1</a></li>
+                          <c:forEach var="pco" begin="2" end="${pages}">
+	                          <li><a href="#">${pco}</a></li>
+                          </c:forEach>
                           <li><a href="jsp/main/#">right</a></li>
                         </ul>
                     </div>
@@ -264,6 +202,6 @@
     <script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="resources/js/lightbox.min.js"></script>
     <script type="text/javascript" src="resources/js/wow.min.js"></script>
-    <script type="text/javascript" src="resources/js/main.js"></script>   
+    <script type="text/javascript" src="resources/js/main.js"></script>
 </body>
 </html>

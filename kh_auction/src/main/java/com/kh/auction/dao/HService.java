@@ -4,6 +4,7 @@ import java.util.List;
 import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
+import com.kh.auction.model.HConsBean;
 public interface HService {
 	/*자료실 저장*/
 	public void insertBbs(BbsBean_sample bbsbean) throws Exception;
@@ -22,4 +23,13 @@ public interface HService {
 	public String getdate() throws Exception;
 	
 	public String getconfuser(String user_id) throws Exception;
+	
+	public void insertcons(HConsBean cb) throws Exception;
+	
+	public List<HConsBean> getconslist() throws Exception;
+
+	public int getconslistno() throws Exception;
+
+	public HConsBean getconsdetail(int cons_no) throws Exception;
+	
 }

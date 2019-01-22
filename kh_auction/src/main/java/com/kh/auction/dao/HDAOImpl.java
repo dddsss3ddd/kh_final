@@ -1,5 +1,6 @@
 package com.kh.auction.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
+import com.kh.auction.model.HConsBean;
 /*
 @Component를 이용해서 스프링 컨테이너가 해당 클래스 객체를 생성하도록 설정할 수 있지만
 모든 클래스에 @Component를 할당하면 어떤 클래스가 어떤 역활을 수행하는지 파악하기
@@ -59,4 +61,22 @@ public class HDAOImpl {
 	public String getconfuser(String user_id) {
 		return sqlSession.selectOne("getconfuser",user_id);
 	}
+
+	public void insertcons(HConsBean cb) {
+		sqlSession.insert("insertcons", cb);
+	}
+	
+	public List<HConsBean> getconslist() {
+		return sqlSession.selectList("getconslist");
+	}
+
+	public int getconslistno() {
+		return sqlSession.selectOne("getconslistno");
+	}
+
+	public HConsBean getconsdetail(int cons_no) {
+		return sqlSession.selectOne("getconsdetail",cons_no);
+	}
+	
+	
 }

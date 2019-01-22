@@ -3,42 +3,42 @@ package com.kh.auction.model;
 import org.springframework.web.multipart.MultipartFile;
 
 public class HAucBean {
-	MultipartFile[] auc_img;
-	String auc_img1;
-	String auc_img2;
+	private MultipartFile[] auc_img;
+	private String auc_img1;
+	private String auc_img2;
 	
-	String user_id;
-	String auc_info1;
-	String auc_info2;
-	String guarantee;
-	String guarantee_info;
+	private String user_id;
+	private String auc_info1;
+	private String auc_info2;
+	private String guarantee;
+	private String guarantee_info;
 	
-	int auc_price;
-	int auc_interval;
+	private long auc_price;
+	private int auc_interval;
 	
-	String auc_add; //등록일
-	String auc_start;
-	String auc_end;
+	private String auc_add; //등록일
+	private String auc_start;
+	private String auc_end;
 	
 	
-	String auto_date_s;
-	String auto_date_e;
-	String auc_start1;
-	int s_hour;
-	int s_min;
+	private String auto_date_s;
+	private String auto_date_e;
+	private String auc_start1;
+	private int s_hour;
+	private int s_min;
 	
-	int e_date;
-	int e_hour;
-	int e_min;
+	private int e_date;
+	private int e_hour;
+	private int e_min;
 	
-	String method;
-	int method_price;
+	private String method;
+	private int method_price;
 	
-	String auc_category1;
+	private String auc_category1;
 	
-	String con_id;
-	String auc_title;
-	String auc_content;
+	private String con_id;
+	private String auc_title;
+	private String auc_content;
 	
 	public MultipartFile[] getAuc_img() {
 		return auc_img;
@@ -88,10 +88,10 @@ public class HAucBean {
 	public void setGuarantee_info(String guarantee_info) {
 		this.guarantee_info = guarantee_info;
 	}
-	public int getAuc_price() {
+	public long getAuc_price() {
 		return auc_price;
 	}
-	public void setAuc_price(int auc_price) {
+	public void setAuc_price(long auc_price) {
 		this.auc_price = auc_price;
 	}
 	public int getAuc_interval() {

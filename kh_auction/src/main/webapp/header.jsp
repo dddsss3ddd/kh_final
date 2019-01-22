@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" 
+           uri="http://java.sun.com/jsp/jstl/core" %>
+           
 <header id="header">      
     <div class="container">
         <div class="row">
@@ -32,39 +37,32 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a href="jsp/main/main.jsp">Home</a></li>
-                    <li class="dropdown"><a href="jsp/main/#">Pages <i class="fa fa-angle-down"></i></a>
+                    <li class="dropdown"><a href="jsp/main/#">Auction! <i class="fa fa-angle-down"></i></a>
                         <ul role="menu" class="sub-menu">
-                            <li><a href="jsp/main/aboutus.jsp">About</a></li>
-                            <li><a href="jsp/main/aboutus2.jsp">About 2</a></li>
-                            <li><a href="jsp/main/service.jsp">Services</a></li>
-                            <li><a href="jsp/main/pricing.jsp">Pricing</a></li>
-                            <li><a href="jsp/main/contact.jsp">Contact us</a></li>
-                            <li><a href="jsp/main/contact2.jsp">Contact us 2</a></li>
-                            <li><a href="jsp/main/404.jsp">404 error</a></li>
-                            <li><a href="jsp/main/coming-soon.jsp">Coming Soon</a></li>
+	                        <li><a href="jsp/main/service.jsp">정기 경매</a></li>
+                            <li><a href="jsp/main/aboutus.jsp">실시간 경매</a></li>
+                            <li><a href="jsp/main/aboutus2.jsp">깜깜이 경매</a></li>
+                            <li><a href="jsp/main/pricing.jsp">경매 검색</a></li>
+                            <li><a href="auction_upload.hh">경매 등록</a></li>
                         </ul>
                     </li>                  
-                    <li class="dropdown"><a href="jsp/main/blog.jsp">Blog <i class="fa fa-angle-down"></i></a>
+                    <li class="dropdown"><a href="jsp/main/blog.jsp">고객센터 <i class="fa fa-angle-down"></i></a>
                         <ul role="menu" class="sub-menu">
-                            <li><a href="jsp/main/blog.jsp">Blog Default</a></li>
-                            <li><a href="jsp/main/blogtwo.jsp">Timeline Blog</a></li>
-                            <li><a href="cons_list.hh">2 Columns + Right Sidebar</a></li>
-                            <li><a href="jsp/main/blogthree.jsp">1 Column + Left Sidebar</a></li>
-                            <li><a href="jsp/main/blogfour.jsp">Blog Masonary</a></li>
-                            <li><a href="cons_details.hh">Cons Details</a></li>
+                            <li><a href="FAQ.hh">FAQ</a></li>
+                            <li><a href="jsp/main/blogtwo.jsp">QNA</a></li>
+                            <li><a href="cons_list.hh">경매위탁</a></li>
+                            <li><a href="jsp/main/blogthree.jsp">공지사항</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown"><a href="jsp/main/portfolio.jsp">Portfolio <i class="fa fa-angle-down"></i></a>
+                    <li class="dropdown"><a href="jsp/main/portfolio.jsp">My Info <i class="fa fa-angle-down"></i></a>
                         <ul role="menu" class="sub-menu">
-                            <li><a href="jsp/main/portfolio.jsp">Portfolio Default</a></li>
-                            <li><a href="jsp/main/portfoliofour.jsp">Isotope 3 Columns + Right Sidebar</a></li>
-                            <li><a href="jsp/main/portfolioone.jsp">3 Columns + Right Sidebar</a></li>
-                            <li><a href="jsp/main/portfoliotwo.jsp">3 Columns + Left Sidebar</a></li>
-                            <li><a href="jsp/main/portfoliothree.jsp">2 Columns</a></li>
-                            <li><a href="auction_upload.hh">Portfolio Details</a></li>
+                            <li><a href="jsp/main/portfolio.jsp">My page</a></li>
+                            <li><a href="jsp/main/portfoliofour.jsp">캐쉬  충전</a></li>
+                            <li><a href="jsp/main/portfolioone.jsp">거래이력 보기</a></li>
+                            <li><a href="jsp/main/portfoliotwo.jsp">환전하기</a></li>
                         </ul>
                     </li>                         
-                    <li><a href="FAQ.hh">FAQ</a></li>                    
+                    <li><a href="#">관리자 메뉴</a></li>                    
                 </ul>
             </div>
             <div class="search">

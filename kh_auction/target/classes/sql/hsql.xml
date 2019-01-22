@@ -8,7 +8,7 @@
 		insert into test values(#{hval1},#{hval2})
 	</insert>
 
-	<insert id="insertAuc" parameterType="abean">
+	<insert id="insertAuc" parameterType="haucbean">
 		insert into auction_item(
 		auc_no,
 		user_id,auc_info1,auc_info2,auc_title,
@@ -51,4 +51,31 @@
 		select user_id from join001 where user_id=#{user_id}
 	</select>
 
+	<insert id="insertcons" parameterType="hconbean">
+		insert into consignment
+			(cons_no,cons_id,cons_title,cons_img1,cons_img2,
+			cons_content,cons_gua,gua_info,cons_price,cons_date,cons_result1,cons_result2)
+		values(
+			cons_no_seq.nextval,#{cons_id},#{cons_title},
+			#{cons_img1},#{cons_img2},#{cons_content},
+			<choose>
+				<when test="cons_gua == 'yes'">'yes',</when>
+				<otherwise>'no',</otherwise>
+			</choose>
+			#{gua_info},#{cons_price},sysdate,'yet','yet'
+		)
+	</insert>
+	
+	<select id="getconslist" resultType="hconbean">
+		select * from consignment order by cons_no desc
+	</select>
+	
+	<select id="getconslistno" resultType="int">
+		select count(*) from consignment
+	</select>
+	
+	<select id="getconsdetail" parameterType="int" resultType="hconbean">
+		select * from consignment where cons_no = #{int}
+	</select>
+	
 </mapper>

@@ -43,8 +43,8 @@
 		
 		
 		<!-- 한세진 -->
-		<typeAlias alias="abean"	type="com.kh.auction.model.HAucBean" />
-		
+		<typeAlias alias="haucbean"	type="com.kh.auction.model.HAucBean" />
+		<typeAlias alias="hconbean"	type="com.kh.auction.model.HConsBean" />
 		
 	</typeAliases>
 <!-- sqlxml은 수정하지 않습니다. -->

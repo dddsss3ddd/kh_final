@@ -9,6 +9,7 @@
  --%>
  
 <% session.setAttribute("user_id","admin"); %> 
+<% session.setAttribute("user_grade","master"); %>
 <%--
 관리자 계정은 admin으로 고정하겠습니다.
 --%>
@@ -21,7 +22,7 @@
 
 <%-- =======================여기 부분을 수정하여 각자 필요한 경로로 이동하세요 --%>
 <%--<jsp:forward page="./minho_in.kk" /> --%>
-<jsp:forward page="./test.hh" />
+<jsp:forward page="./main.hh" />
 <%--
 =============index.jsp 파일의 경로를 수정하여 작업하는 페이지로 이동하여 테스트 할 수 있습니다.
 

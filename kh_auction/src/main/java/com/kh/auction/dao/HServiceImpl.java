@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
+import com.kh.auction.model.HConsBean;
 
 @Service("hService")
 public class HServiceImpl implements HService {
@@ -55,6 +56,27 @@ public class HServiceImpl implements HService {
 	public String getconfuser(String user_id) throws Exception {
 		return hanDAO.getconfuser(user_id);
 	}
-	
-	
+
+	@Override
+	public void insertcons(HConsBean cb) throws Exception {
+		hanDAO.insertcons(cb);
+		
+	}
+
+	@Override
+	public List<HConsBean> getconslist() throws Exception {
+		return hanDAO.getconslist();
+	}
+
+	@Override
+	public int getconslistno() throws Exception {
+		int instno = hanDAO.getconslistno();
+		
+		return (instno-1)/6 + 1 ;
+	}
+
+	@Override
+	public HConsBean getconsdetail(int cons_no) throws Exception {
+		return hanDAO.getconsdetail(cons_no);
+	}
 }

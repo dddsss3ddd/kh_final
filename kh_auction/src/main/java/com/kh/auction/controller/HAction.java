@@ -3,12 +3,18 @@ package com.kh.auction.controller;
 //썸네일 생성
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +30,7 @@ import com.kh.auction.dao.HService;
 import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
+import com.kh.auction.model.HConsBean;
 
 @Controller
 public class HAction {
@@ -131,10 +138,10 @@ public class HAction {
 		return "kim/test";
 	}
 	
-	@RequestMapping(value="test.hh")
+	@RequestMapping(value="main.hh")
 	public String testin (
 			) throws Exception {
-		return "main/main";
+		return "han/main";
 	}
 	
 	@RequestMapping(value="auction_upload.hh")
@@ -240,13 +247,41 @@ public class HAction {
 	public ModelAndView cons_list (
 			) throws Exception {
 		ModelAndView mv = new ModelAndView("han/cons_list");
+		
+		List<HConsBean> cons_list = hService.getconslist();
+		int pages = hService.getconslistno();
+		mv.addObject("cons_list",cons_list);
+		mv.addObject("pages",pages);
+		
+		//댓글 개수를 각각빈에 추가하여 전송할 수 있도록 하자.
+		
 		return mv;
 	}
 	
-	@RequestMapping(value="cons_details.hh")
+	@RequestMapping(value="cons_detail.hh",method=RequestMethod.GET)
 	public ModelAndView cons_details (
+			@RequestParam("cons_no") int cons_no,
+			HttpServletResponse response
 			) throws Exception {
 		ModelAndView mv = new ModelAndView("han/cons_details");
+		
+		HConsBean cb = hService.getconsdetail(cons_no);
+		if(cb == null) {
+			response.setCharacterEncoding("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('해당하는 번호의 경매가 없습니다.');");
+			out.println("history.back();</script>");
+			out.close();
+		}
+		SimpleDateFormat dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date auc_start= new Date();
+		Date auc_system=dateform.parse(hService.getdate());
+		String time_result = "";
+		if(auc_start.compareTo(auc_system)==-1) time_result="can_not_mod";
+		
+		mv.addObject("time_compare",time_result);
+		mv.addObject("cons",cb);
+		
 		return mv;
 	}
 	
@@ -257,16 +292,50 @@ public class HAction {
 		return mv;
 	}
 	
+	@RequestMapping(value="cons_write_ok.hh",method=RequestMethod.POST)
+	public ModelAndView cons_write_ok (HConsBean cb,
+			HttpServletRequest request,
+			HttpServletResponse response,
+			HttpSession session
+			) throws Exception {
+		cb.setCons_id((String)session.getAttribute("user_id"));
+		
+		String img2 = "";
+		if(cb.getCons_img() !=null) {
+			for(int i=0; i<cb.getCons_img().length;i++) {
+				String fileDBName = getFileDBName(cb.getCons_img()[i].getOriginalFilename());
+				cb.getCons_img()[i].transferTo(new File(saveFolder + fileDBName));
+				img2+="resources/upload"+fileDBName;
+				if(i+1<cb.getCons_img().length) img2+=",";
+			}
+		}
+		cb.setCons_img2(img2);
+		
+		if(!img2.equals("")) {
+			String thumb_dir="D:/final/kh_final/kh_auction/src/main/webapp/"+img2.split(",")[0];
+			
+			System.out.println("썸네일 생성이미지의 원본경로:"+thumb_dir);
+			
+			int index = img2.split(",")[0].lastIndexOf(".");
+		    String fileName = img2.split(",")[0].substring(0, index);
+		    String fileExt = img2.split(",")[0].substring(index + 1);
+			
+		    String thumb_img = makeThumbnail(thumb_dir, fileName.split("/")[fileName.split("/").length-1], fileExt);
+		    System.out.println("파일 이름?"+fileName.split("/")[fileName.split("/").length-1]);
+		    cb.setCons_img1(thumb_img);
+		}
+		hService.insertcons(cb);
+		
+		ModelAndView mv = new ModelAndView("han/cons_write");
+		return mv;
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@RequestMapping(value="cons_mod.hh")
+	public ModelAndView cons_mod (
+			) throws Exception {
+		ModelAndView mv = new ModelAndView("han/cons_mod");
+		return mv;
+	}
 	
 	
 	

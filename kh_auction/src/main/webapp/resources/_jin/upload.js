@@ -79,6 +79,7 @@ jQuery(function($) {
 						  .append('영')
 						  .css('color','red');
 		}else {
+			$('#auc_price').val(Math.floor($('#auc_price').val()));
 			num_to_kor($('#auc_price'));
 		}
 		
@@ -89,6 +90,7 @@ jQuery(function($) {
 			  .append('일')
 			  .css('color','red');
 		}else{
+			$('#auc_interval').val(Math.floor($('#auc_interval').val()));
 			num_to_kor($('#auc_interval'));
 		}
 	});
@@ -109,6 +111,8 @@ jQuery(function($) {
 		if($('#method_price').val()<0 || $('#method_price').val()>500000){
 			alert('택배비 최소금액 : 0원, 최대금액 50만원 입니다.');
 			$(this).val('0');
+		}else{
+			$(this).val(Math.floor($(this).val()));
 		}
 	})
 	
