@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +30,7 @@ import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
 import com.kh.auction.model.HConsBean;
+import com.kh.auction.model.HConsUpgradeBean;
 
 @Controller
 public class HAction {
@@ -275,10 +275,18 @@ public class HAction {
 		}
 		SimpleDateFormat dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date auc_start= new Date();
-		Date auc_system=dateform.parse(hService.getdate());
-		String time_result = "";
-		if(auc_start.compareTo(auc_system)==-1) time_result="can_not_mod";
+		String date_cons_is = hService.getdate_cons(cons_no);
+
+		String time_result = "mod_ok";
 		
+		if(date_cons_is != null) {
+			Date auc_system=dateform.parse(date_cons_is);
+			if(auc_start.compareTo(auc_system)==-1) time_result="can_not_mod";
+		}
+
+		System.out.println("이전"+cb.getCons_content());
+		cb.setCons_content(cb.getCons_content().replaceAll("\n","<br>"));
+		System.out.println("이후"+cb.getCons_content());
 		mv.addObject("time_compare",time_result);
 		mv.addObject("cons",cb);
 		
@@ -326,25 +334,130 @@ public class HAction {
 		}
 		hService.insertcons(cb);
 		
-		ModelAndView mv = new ModelAndView("han/cons_write");
+		ModelAndView mv = new ModelAndView("han/cons_list");
 		return mv;
 	}
 	
-	@RequestMapping(value="cons_mod.hh")
-	public ModelAndView cons_mod (
+	@RequestMapping(value="cons_del.hh",method=RequestMethod.POST)
+	@ResponseBody
+	public String cons_del (
+			@RequestParam(value="cons_no",defaultValue="0") int cons_no,
+			HttpSession session
 			) throws Exception {
-		ModelAndView mv = new ModelAndView("han/cons_mod");
+		String answer = "deny";
+		String user_id = (String)session.getAttribute("user_id");
+		String user_grade = (String)session.getAttribute("user_grade");
+		
+		HConsBean cb = hService.getconsdetail(cons_no);
+		int del_count=0;
+		if(user_id.equals(cb.getCons_id()) || user_grade.equals("master") || user_grade.equals("admin")) {
+			del_count=hService.consdel(cons_no);
+		}
+		if(del_count != 0) {
+			answer = "deleted";
+			image_remover(cb.getCons_img1());
+			
+			if(cb.getCons_img2() != null && !cb.getCons_img2().equals("")){
+				image_remover(cb.getCons_img2().split(","));
+			}
+		}
+		System.out.println(del_count + "cons_del() 에서 지워진 컬럼 수 리턴 값");
+		System.out.println(answer + "cons_del() 에서 answer?");
+		return answer;
+	}
+	
+	@RequestMapping(value="cons_mod.hh",method=RequestMethod.GET)
+	public ModelAndView cons_mod (
+			@RequestParam("cons_no") int cons_no
+			) throws Exception {
+		ModelAndView mv = new ModelAndView("han/cons_mod_write");
+		HConsBean cb = hService.getconsdetail(cons_no);
+		mv.addObject("cons",cb);
+		
 		return mv;
 	}
 	
+	@RequestMapping(value="cons_mod_ok.hh",method=RequestMethod.POST)
+	public String cons_mod_ok (
+			HConsBean cb,
+			@RequestParam("img_control") String img_control
+			) throws Exception {
+		//콘스 이미지 새로 올리기
+		if(img_control.equals("img_change")) {
+			if(cb.getCons_img1() != null || !cb.getCons_img1().trim().equals("")) image_remover(cb.getCons_img1());
+			if(cb.getCons_img2() != null) image_remover(cb.getCons_img2().split(","));
+			
+			String img2 = "";
+			if(cb.getCons_img() !=null) {
+				for(int i=0; i<cb.getCons_img().length;i++) {
+					String fileDBName = getFileDBName(cb.getCons_img()[i].getOriginalFilename());
+					cb.getCons_img()[i].transferTo(new File(saveFolder + fileDBName));
+					img2+="resources/upload"+fileDBName;
+					if(i+1<cb.getCons_img().length) img2+=",";
+				}
+			}
+			cb.setCons_img2(img2);
+			
+			if(!img2.equals("")) {
+				String thumb_dir="D:/final/kh_final/kh_auction/src/main/webapp/"+img2.split(",")[0];
+				
+				System.out.println("썸네일 생성이미지의 원본경로:"+thumb_dir);
+				
+				int index = img2.split(",")[0].lastIndexOf(".");
+			    String fileName = img2.split(",")[0].substring(0, index);
+			    String fileExt = img2.split(",")[0].substring(index + 1);
+				
+			    String thumb_img = makeThumbnail(thumb_dir, fileName.split("/")[fileName.split("/").length-1], fileExt);
+			    System.out.println("파일 이름?"+fileName.split("/")[fileName.split("/").length-1]);
+			    cb.setCons_img1(thumb_img);
+			}
+			//콘스 이미지 추가하기
+		}else if(img_control.equals("img_add")) {
+			String img2 = "";
+			if(!cb.getCons_img2().trim().equals("") && cb.getCons_img2()!= null) img2 += ",";
+			if(cb.getCons_img() !=null) {
+				for(int i=0; i<cb.getCons_img().length;i++) {
+					String fileDBName = getFileDBName(cb.getCons_img()[i].getOriginalFilename());
+					cb.getCons_img()[i].transferTo(new File(saveFolder + fileDBName));
+					img2+="resources/upload"+fileDBName;
+					if(i+1<cb.getCons_img().length) img2+=",";
+				}
+			}
+			cb.setCons_img2(cb.getCons_img2()+img2);
+		}
+		return "han/cons_detail?cons_no="+cb.getCons_no();
+	}
 	
+	//오버로딩을 통한 배열/단일 이미지 삭제
+	public void image_remover(String[] img2) {
+		for(int i=0;i<img2.length;i++) {
+			image_remove_task(saveFolder,img2[i]);
+		}
+	}
+	public void image_remover(String img) {
+		image_remove_task(thumbFolder,img);
+	}
 	
-	
-	
-	
-	
-	
-	
+	public void image_remove_task(String savedir,String save_file) {
+		File DelFile=new File(savedir+save_file);
+		if(DelFile.exists()) {//기존 이진 파일이 존재하면
+			System.out.println("삭제 파일:"+DelFile.getPath());
+			DelFile.delete();//기존 파일 삭제
+		}
+	}
+
+	//constraint detail 가로탭과 아이콘 업글하기.
+	@RequestMapping(value="cons_detail_upgrade.hh",method=RequestMethod.GET)
+	@ResponseBody
+	public Object cons_detail_upgrade (
+			HConsUpgradeBean cub
+			) throws Exception {
+		
+		hService.consdataupdate(cub);
+		cub=hService.consupdatereturn(cub);
+		
+		return cub;
+	}
 }
 
 

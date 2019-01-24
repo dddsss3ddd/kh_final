@@ -78,4 +78,57 @@
 		select * from consignment where cons_no = #{int}
 	</select>
 	
+	<select id="getdate_cons" resultType="string" parameterType="int">
+		select cons_result1_date from consignment where cons_no=#{cons_no}
+	</select>
+	
+	<delete id="consdel" parameterType="int">
+		delete from consignment where cons_no=#{cons_no}
+	</delete>
+	
+	<update id="consdataupdate" parameterType="hcubean">
+		update consignment
+		set
+		
+		
+		<if test="button_info =='indentify_accept'">
+			cons_result1='accept',
+			cons_result1_date=sysdate
+		</if>
+		<if test="button_info =='indentify_deny'">
+			cons_result1='deny',
+			cons_result1_date=sysdate
+		</if>
+		<if test="button_info=='ant_update'">
+			cons_ant_price=to_number(trim(#{cons_ant_price})),
+			cons_ans=#{cons_ans}
+		</if>
+		<if test="button_info=='ant_in_accept'">
+			cons_result2='accept'
+			cons_ant_price=to_number(trim(#{cons_ant_price})),
+			cons_ans=#{cons_ans},
+			cons_result2_date=sysdate
+		</if>
+		<if test="button_info=='ant_in_deny'">
+			cons_result2='deny'
+			cons_ant_price=to_number(trim(#{cons_ant_price})),
+			cons_ans=#{cons_ans},
+			cons_result2_date=sysdate
+		</if>
+		<if test="button_info=='cons_accept' or button_info=='cons_deny'">
+			auc_price=to_number(trim(#{auc_price})),
+			auc_interval=to_number(trim(#{auc_interval})),
+			cons_commit=#{cons_commit}
+		</if>
+		where cons_no = #{cons_no}
+	</update>
+	
+	<select id="consupdatereturn" parameterType="" resultType="">
+		select
+			cons_no,cons_result1,cons_result1_date,cons_go_date,i_s_time,i_e_time,
+			cons_go_content,cons_result2,cons_ant_price,cons_ans,cons_result2_date,
+			auc_price,auc_interval
+		from consignment where cons_no=#{cons_no}
+	</select>
+	
 </mapper>

@@ -11,6 +11,7 @@ import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
 import com.kh.auction.model.HConsBean;
+import com.kh.auction.model.HConsUpgradeBean;
 /*
 @Component를 이용해서 스프링 컨테이너가 해당 클래스 객체를 생성하도록 설정할 수 있지만
 모든 클래스에 @Component를 할당하면 어떤 클래스가 어떤 역활을 수행하는지 파악하기
@@ -31,16 +32,16 @@ public class HDAOImpl {
 	
 	//예시 메서드
 	public void insertBbs(BbsBean_sample bbsbean) throws Exception{
-		sqlSession.insert("bbs_insert",bbsbean);
+		sqlSession.insert("Han.bbs_insert",bbsbean);
 	}
 	
 	public int getListCount() throws Exception{
-		int count=((Integer)sqlSession.selectOne("bbs_count")).intValue();
+		int count=((Integer)sqlSession.selectOne("Han.bbs_count")).intValue();
 		return count;
 	}
 	
 	public List<BbsBean_sample> getBbsList(int page) throws Exception {
-		List<BbsBean_sample> list=sqlSession.selectList("bbs_list",page);
+		List<BbsBean_sample> list=sqlSession.selectList("Han.bbs_list",page);
 		return list;
 	}
 	public void testIn(HBean hb) {
@@ -51,32 +52,46 @@ public class HDAOImpl {
 	//이하 자유롭게 작성하세요
 	
 	public void insertAuc(HAucBean ab) {
-		sqlSession.insert("insertAuc",ab);
+		sqlSession.insert("Han.insertAuc",ab);
 	}
 	
 	public String getdate() {
-		return sqlSession.selectOne("getdate");
+		return sqlSession.selectOne("Han.getdate");
 	}
 
 	public String getconfuser(String user_id) {
-		return sqlSession.selectOne("getconfuser",user_id);
+		return sqlSession.selectOne("Han.getconfuser",user_id);
 	}
 
 	public void insertcons(HConsBean cb) {
-		sqlSession.insert("insertcons", cb);
+		sqlSession.insert("Han.insertcons", cb);
 	}
 	
 	public List<HConsBean> getconslist() {
-		return sqlSession.selectList("getconslist");
+		return sqlSession.selectList("Han.getconslist");
 	}
 
 	public int getconslistno() {
-		return sqlSession.selectOne("getconslistno");
+		return sqlSession.selectOne("Han.getconslistno");
 	}
 
 	public HConsBean getconsdetail(int cons_no) {
-		return sqlSession.selectOne("getconsdetail",cons_no);
+		return sqlSession.selectOne("Han.getconsdetail",cons_no);
 	}
-	
-	
+
+	public String getdate_cons(int cons_no) {
+		return sqlSession.selectOne("Han.getdate_cons", cons_no);
+	}
+
+	public int consdel(int cons_no) {
+		return sqlSession.delete("Han.consdel", cons_no);
+	}
+
+	public void consdataupdate(HConsUpgradeBean cub) {
+		sqlSession.update("Han.consdataupdate", cub);
+	}
+
+	public HConsUpgradeBean consupdatereturn(HConsUpgradeBean cub) {
+		return sqlSession.selectOne("Han.consupdatereturn",cub.getCons_no());
+	}
 }

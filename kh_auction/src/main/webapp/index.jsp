@@ -8,8 +8,8 @@
 <% session.setAttribute("user_id", "user1");%>
  --%>
  
-<% session.setAttribute("user_id","admin"); %> 
-<% session.setAttribute("user_grade","master"); %>
+<% session.setAttribute("user_id","user1"); %> 
+<% session.setAttribute("user_grade","gold"); %>
 <%--
 관리자 계정은 admin으로 고정하겠습니다.
 --%>

@@ -5,6 +5,7 @@ import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
 import com.kh.auction.model.HConsBean;
+import com.kh.auction.model.HConsUpgradeBean;
 public interface HService {
 	/*자료실 저장*/
 	public void insertBbs(BbsBean_sample bbsbean) throws Exception;
@@ -31,5 +32,13 @@ public interface HService {
 	public int getconslistno() throws Exception;
 
 	public HConsBean getconsdetail(int cons_no) throws Exception;
+
+	public String getdate_cons(int cons_no) throws Exception;
+
+	public int consdel(int cons_no) throws Exception;
+
+	public void consdataupdate(HConsUpgradeBean cub) throws Exception;
+
+	public HConsUpgradeBean consupdatereturn(HConsUpgradeBean cub) throws Exception;
 	
 }

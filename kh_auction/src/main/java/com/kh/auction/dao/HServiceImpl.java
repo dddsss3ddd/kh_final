@@ -9,6 +9,7 @@ import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
 import com.kh.auction.model.HConsBean;
+import com.kh.auction.model.HConsUpgradeBean;
 
 @Service("hService")
 public class HServiceImpl implements HService {
@@ -78,5 +79,25 @@ public class HServiceImpl implements HService {
 	@Override
 	public HConsBean getconsdetail(int cons_no) throws Exception {
 		return hanDAO.getconsdetail(cons_no);
+	}
+
+	@Override
+	public String getdate_cons(int cons_no) throws Exception {
+		return hanDAO.getdate_cons(cons_no);
+	}
+
+	@Override
+	public int consdel(int cons_no) throws Exception {
+		return hanDAO.consdel(cons_no);
+	}
+
+	@Override
+	public void consdataupdate(HConsUpgradeBean cub) throws Exception {
+		hanDAO.consdataupdate(cub);
+	}
+
+	@Override
+	public HConsUpgradeBean consupdatereturn(HConsUpgradeBean cub) throws Exception {
+		return hanDAO.consupdatereturn(cub);
 	}
 }

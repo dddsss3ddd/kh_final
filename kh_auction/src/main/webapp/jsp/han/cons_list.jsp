@@ -110,11 +110,11 @@
                                     <h2 class="post-title bold"><a href="cons_detail.hh?cons_no=${bean.cons_no}"><c:out value="${bean.cons_title}"/></a></h2>
                                     <h3 class="post-author"><a href="#">Posted by <c:out value="${bean.cons_id}"/></a></h3>
                                     <div style="height:90px; overflow:hidden;">
-                                    	<c:if test="${fn:length(bean.cons_id) le 100}">
-                                    		<c:out value="${bean.cons_id}"/>
+                                    	<c:if test="${fn:length(bean.cons_content) le 100}">
+                                    		<c:out value="${bean.cons_content}"/>
                                     	</c:if>
-                                    	<c:if test="${fn:length(bean.cons_id) gt 100}">
-                                    		<c:out value="${fn:substring(bean.cons_id,0,96)}"/><c:out value="[...]"/>
+                                    	<c:if test="${fn:length(bean.cons_content) gt 100}">
+                                    		<c:out value="${fn:substring(bean.cons_content,0,96)}"/><c:out value="[...]"/>
                                     	</c:if>
                                     </div>
                                     <a href="cons_detail.hh?cons_no=${bean.cons_no}" class="read-more">View More</a>
