@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+	</context-param>
+	
+<!-- 필터 추가함 -->
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>
+		  org.springframework.web.filter.CharacterEncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 서블릿에서 값을 받아 post방식으로 넘어올 경우
+	     request.setCharacterEncoding("UTF-8") 없어도 한글 안깨집니다. -->
+<!-- 필터 추가 끝 -->
+	
+	<!-- https 추가 -->
+	<!-- <security-constraint>
+    <web-resource-collection>
+        <web-resource-name>SSL Forward</web-resource-name>
+	        <url-pattern>/*</url-pattern>
+	    </web-resource-collection>
+	    <user-data-constraint>
+	        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+	    </user-data-constraint>
+	</security-constraint>
+	https css 및 이미지 처리
+	<security-constraint>
+	    <web-resource-collection>
+	        <web-resource-name>HTTPS or HTTP</web-resource-name>
+	        <url-pattern>/resources/*</url-pattern>
+	    </web-resource-collection>
+	    <user-data-constraint>
+	        <transport-guarantee>NONE</transport-guarantee>
+	    </user-data-constraint>
+	</security-constraint> -->
+
+	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- Processes application requests -->
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+		<!--
+		jsp를 빼고 모든 주소를 여기서 처리한다고 선언하므로 다양한 확장자 언어에 대해서 처리가 되지 않는 무제가 발생한다.(jpg,png 등등..)
+		매핑을 할 수 없다고 하는 오류가 발생한다.
+		지금까지는 다양한 확장자에 대해서 아파치 서블릿이 지정한 확장자 제외 나머지를 처리해주었지만 여기서는 / 를 지정하므로
+		모든 확장자를 처리하겠다고 선언한 것이다.이 때문에 문제가 발생하는 것이다.
+		 -->
+	</servlet-mapping>
+<!-- 
+root-context.xml, servlet-context.xml
+컨테이너는 root와 dispatcher-servlet 두개가 생성된다(기본).
+root는 부모IOC 컨테이너가 된다.
+이전에는 info-servlet.xml을 만들어서 객체생성을 하도록 하게 했다.container 생성이 공통으로 일어났으나
+스프링에서는 default로 제공하는 2개의 container가 있다.
+root-context.xml 에서는 다수의 개발자간 공통의 xml을 넣어 생성하고,
+각자의 개발자간 servlet-context.xml을 제작하여 사용하도록 한다.
+
+ -->
+</web-app>

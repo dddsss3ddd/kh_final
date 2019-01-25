@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 널처리 -->
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+
+
+
+	<typeAliases>
+	<!-- 기본 제공 bean -->
+		<typeAlias alias="kbean"	type="com.kh.auction.model.KBean" />
+		<typeAlias alias="cbean"	type="com.kh.auction.model.CBean" />
+		<typeAlias alias="jbean"	type="com.kh.auction.model.JBean" />
+		<typeAlias alias="hbean"	type="com.kh.auction.model.HBean" />
+		
+		<!-- 새로 생성한 bean은 아래 각자 위치에 추가해주세요. -->
+		<!-- 김민호 -->
+		<!-- 예시
+		<typeAlias alias="새로운 별명"	type="com.kh.auction.model.원래 빈 클래스 이름" />
+		 -->
+		
+		
+		
+		
+		<!-- 정해찬 -->
+		<!-- 예시
+		<typeAlias alias="새로운 별명"	type="com.kh.auction.model.원래 빈 클래스 이름" />
+		 -->
+		
+		
+		
+		
+		<!-- 최원석 -->
+		<!-- 예시
+		<typeAlias alias="새로운 별명"	type="com.kh.auction.model.원래 빈 클래스 이름" />
+		 -->
+		
+		
+		
+		
+		<!-- 한세진 -->
+		<typeAlias alias="haucbean"	type="com.kh.auction.model.HAucBean" />
+		<typeAlias alias="hconbean"	type="com.kh.auction.model.HConsBean" />
+		<typeAlias alias="hcubean"	type="com.kh.auction.model.HConsUpgradeBean" />
+		
+	</typeAliases>
+<!-- sqlxml은 수정하지 않습니다. -->
+	<mappers>
+		<mapper resource="sql/csql.xml" />
+		<mapper resource="sql/hsql.xml" />
+		<mapper resource="sql/jsql.xml" />
+		<mapper resource="sql/ksql.xml" />
+	</mappers>
+
+</configuration>

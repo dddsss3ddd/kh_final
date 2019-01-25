@@ -38,7 +38,8 @@
     <!-- Editable user database that can also be used by
          UserDatabaseRealm to authenticate users
     -->
-    <Resource auth="Container" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" name="UserDatabase" pathname="conf/tomcat-users.xml" type="org.apache.catalina.UserDatabase"/>
+    <Resource auth="Container" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" 
+    name="UserDatabase" pathname="conf/tomcat-users.xml" type="org.apache.catalina.UserDatabase"/>
   </GlobalNamingResources>
 
   <!-- A "Service" is a collection of one or more "Connectors" that share
@@ -62,12 +63,13 @@
          APR (HTTP/AJP) Connector: /docs/apr.html
          Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
     -->
-    <Connector connectionTimeout="20000" port="8088" protocol="HTTP/1.1" redirectPort="8443"/>
-    <Connector port="8443" protocol="org.apache.coyote.http11.Http11Protocol"
-           maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
-           keystoreFile="D:/ssls/cert/keystore2" keystorePass="auction"
-           clientAuth="false" sslProtocol="TLS" />
+    <Connector connectionTimeout="20000" port="8088" 
+    protocol="HTTP/1.1" redirectPort="8443" URIEncoding="utf-8"/>
 
+     <Connector SSLEnabled="true" clientAuth="false" keystoreFile="D:/ssls/cert/keystore2" keystorePass="auction" maxThreads="150" port="8443" 
+     protocol="org.apache.coyote.http11.Http11Protocol" scheme="https" secure="true" sslProtocol="TLS"/>
+     
+ -->
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
@@ -156,7 +158,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="kh_auction" path="/auction" reloadable="true" source="org.eclipse.jst.jee.server:kh_auction"/><Context docBase="samplepage" path="/view" reloadable="true" source="org.eclipse.jst.jee.server:samplepage"/></Host>
+      <Context docBase="kh_auction" path="/auction" reloadable="true" source="org.eclipse.jst.jee.server:kh_auction"/></Host>
     </Engine>
   </Service>
 </Server>

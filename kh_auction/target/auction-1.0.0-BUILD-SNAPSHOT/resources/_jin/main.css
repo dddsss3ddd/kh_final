@@ -1,0 +1,41 @@
+#home-slider {
+    background: url(../_jin/home-slider.jpg) 0 100% repeat-x;
+}
+
+#home_slide_auc{
+	width:420px;
+	height:250px;
+	display:inline;
+}
+
+#hot_auction_title{
+	text-align:center;
+}
+
+.popular_auc{
+	border-radius:30px;
+	border:1px solid #d29948;
+	padding:10px;
+}
+
+.kh{
+	color:#1138ad;
+	font-weight:bold;
+}
+
+.img-responsive{
+	height : 150px;
+}
+
+.imgs {
+	height:100px;
+	width:100%;
+}
+
+.slide-text {
+	margin-top:50px;
+}
+
+.to_hots:hover{
+	cursor:pointer;
+}

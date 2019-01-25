@@ -99,18 +99,23 @@
 			cons_result1='deny',
 			cons_result1_date=sysdate
 		</if>
+		<if test="button_info =='identify_date_select'">
+			cons_go_date=#{cons_go_date},
+			cons_go_time_f=to_number(#{cons_go_time_f}),
+			cons_go_time_t=to_number(#{cons_go_time_t})
+		</if>
 		<if test="button_info=='ant_update'">
 			cons_ant_price=to_number(trim(#{cons_ant_price})),
 			cons_ans=#{cons_ans}
 		</if>
 		<if test="button_info=='ant_in_accept'">
-			cons_result2='accept'
+			cons_result2='accept',
 			cons_ant_price=to_number(trim(#{cons_ant_price})),
 			cons_ans=#{cons_ans},
 			cons_result2_date=sysdate
 		</if>
 		<if test="button_info=='ant_in_deny'">
-			cons_result2='deny'
+			cons_result2='deny',
 			cons_ant_price=to_number(trim(#{cons_ant_price})),
 			cons_ans=#{cons_ans},
 			cons_result2_date=sysdate
@@ -123,9 +128,9 @@
 		where cons_no = #{cons_no}
 	</update>
 	
-	<select id="consupdatereturn" parameterType="" resultType="">
+	<select id="consupdatereturn" parameterType="int" resultType="hcubean">
 		select
-			cons_no,cons_result1,cons_result1_date,cons_go_date,i_s_time,i_e_time,
+			cons_no,cons_result1,cons_result1_date,cons_go_date,cons_go_time_f,cons_go_time_t,
 			cons_go_content,cons_result2,cons_ant_price,cons_ans,cons_result2_date,
 			auc_price,auc_interval
 		from consignment where cons_no=#{cons_no}

@@ -43,7 +43,7 @@
 	        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
 	    </user-data-constraint>
 	</security-constraint>
-	<!-- https css 및 이미지 처리 -->
+	<!-- https css 및 이미지 처리  -->
 	<security-constraint>
 	    <web-resource-collection>
 	        <web-resource-name>HTTPS or HTTP</web-resource-name>

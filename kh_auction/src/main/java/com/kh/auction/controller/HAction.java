@@ -1,13 +1,16 @@
 package com.kh.auction.controller;
 
-//½æ³×ÀÏ »ı¼º
+//ì¸ë„¤ì¼ ìƒì„±
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -25,6 +28,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.kh.auction.dao.HService;
 import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
@@ -38,48 +43,48 @@ public class HAction {
 	@Autowired
 	private HService hService;
 	
-	//ÆÄÀÏÀúÀåÀ» ÇÒ °æ¿ì ¾Æ·¡ °æ·Î¸¦ ¾Ë¸Â°Ô ¼öÁ¤ÇØ¾ßÇÕ´Ï´Ù. ¸ğµç ÆÄÀÏÀº uploadÆú´õ¿¡ ¹Ş´Â °ÍÀ¸·Î ÇÏ°Ú½À´Ï´Ù.
+	//íŒŒì¼ì €ì¥ì„ í•  ê²½ìš° ì•„ë˜ ê²½ë¡œë¥¼ ì•Œë§ê²Œ ìˆ˜ì •í•´ì•¼í•©ë‹ˆë‹¤. ëª¨ë“  íŒŒì¼ì€ uploadí´ë”ì— ë°›ëŠ” ê²ƒìœ¼ë¡œ í•˜ê² ìŠµë‹ˆë‹¤.
 	private String saveFolder="D:/final/kh_final/kh_auction/src/main/webapp/resources/upload";
 	private String thumbFolder="D:/final/kh_final/kh_auction/src/main/webapp/resources/upload/thumbnail/";
 	
 	
-	//===============================ÁÖ¼Ò ¸¶Áö¸· ºÎºĞÀº °¢ÀÚ °íÀ¯ÇÑ °ªÀ¸·Î ÇÏµµ·Ï ÇÕ´Ï´Ù.
-	//°øµ¿ ÀÛ¾÷³»¿ëÀÌ¶ó¸é ÇÕÀÇÇÏ¿© ÅëÀÏÇÏµµ·Ï ÇÏ°í ÀÌ¿Ü °³ÀÎ ÀÛ¾÷ÀÌ¶ó¸é °¢ÀÚ È®ÀåÀÚ¸íÀ» »ç¿ëÇÏµµ·Ï ÇÕ´Ï´Ù.
+	//===============================ì£¼ì†Œ ë§ˆì§€ë§‰ ë¶€ë¶„ì€ ê°ì ê³ ìœ í•œ ê°’ìœ¼ë¡œ í•˜ë„ë¡ í•©ë‹ˆë‹¤.
+	//ê³µë™ ì‘ì—…ë‚´ìš©ì´ë¼ë©´ í•©ì˜í•˜ì—¬ í†µì¼í•˜ë„ë¡ í•˜ê³  ì´ì™¸ ê°œì¸ ì‘ì—…ì´ë¼ë©´ ê°ì í™•ì¥ìëª…ì„ ì‚¬ìš©í•˜ë„ë¡ í•©ë‹ˆë‹¤.
 
-	//¿¹½Ã ¸Ş¼­µå ÀÔ´Ï´Ù.
+	//ì˜ˆì‹œ ë©”ì„œë“œ ì…ë‹ˆë‹¤.
 	@RequestMapping(value="bbs_sdf3write.nhn")
 	public String bbs_write() {
-		return "bbs/bbs_write"; //bbs Æú´õÀÇ bbs_write.jsp ºä
+		return "bbs/bbs_write"; //bbs í´ë”ì˜ bbs_write.jsp ë·°
 	}
 	
-	//¿¹½Ã ¸Ş¼­µå ÀÔ´Ï´Ù.
-	@RequestMapping(value="/bbs_wr3fite_ok.nhn",method=RequestMethod.POST)
+	//ì˜ˆì‹œ ë©”ì„œë“œ ì…ë‹ˆë‹¤.
+	@RequestMapping(value="/bbs_writde_ok.nhn",method=RequestMethod.POST)
 	public String bbs_write_ok(BbsBean_sample bbsbean) throws Exception{
 		MultipartFile uploadfile=bbsbean.getUploadfile();
 		
 		if(!uploadfile.isEmpty()) {
-			//¿ø·¡ ÆÄÀÏ¸í ±¸ÇØ¿À±â
+			//ì›ë˜ íŒŒì¼ëª… êµ¬í•´ì˜¤ê¸°
 			String fileName = uploadfile.getOriginalFilename();
 			
-			//¿ø·¡ ÆÄÀÏ¸í ÀúÀå
+			//ì›ë˜ íŒŒì¼ëª… ì €ì¥
 			bbsbean.setBbs_original(fileName);
 			
-			//DB¿¡ ÀúÀåÇÒ ÆÄÀÏ¸í ±¸ÇØ¿Â´Ù.
+			//DBì— ì €ì¥í•  íŒŒì¼ëª… êµ¬í•´ì˜¨ë‹¤.
 			String fileDBName = getFileDBName(fileName);
 			
-			//transferTo(File path) : ¾÷·ÎµåÇÑ ÆÄÀÏÀ» ¸Å°³º¯¼öÀÇ °æ·Î¿¡ ÀúÀåÇÑ´Ù.
+			//transferTo(File path) : ì—…ë¡œë“œí•œ íŒŒì¼ì„ ë§¤ê°œë³€ìˆ˜ì˜ ê²½ë¡œì— ì €ì¥í•œë‹¤.
 			uploadfile.transferTo(new File(saveFolder + fileDBName));
 			
-			//¹Ù²ï ÆÄÀÏ¸íÀ¸·Î ÀúÀå
+			//ë°”ë€ íŒŒì¼ëª…ìœ¼ë¡œ ì €ì¥
 			bbsbean.setBbs_file(fileDBName);
 		}
 		
-		this.hService.insertBbs(bbsbean); //ÀúÀå ¸Ş¼­µå È£Ãâ
+		this.hService.insertBbs(bbsbean); //ì €ì¥ ë©”ì„œë“œ í˜¸ì¶œ
 		
 		return "redirect:bbs_list.nhn";
 	}
 
-	//ÆÄÀÏ ÀÔÃâ·Â¿¡ ´ëÇÑ ¸Ş¼­µåÀÔ´Ï´Ù. ÇÊ¿äÇÑ °æ¿ì ³²°ÜµÎ°í ÀÛ¾÷ÇÏ¼¼¿ä.
+	//íŒŒì¼ ì…ì¶œë ¥ì— ëŒ€í•œ ë©”ì„œë“œì…ë‹ˆë‹¤. í•„ìš”í•œ ê²½ìš° ë‚¨ê²¨ë‘ê³  ì‘ì—…í•˜ì„¸ìš”.
 	private String getFileDBName(String fileName) throws Exception{
 		Calendar c=Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);
@@ -87,38 +92,38 @@ public class HAction {
 		int date = c.get(Calendar.DATE);
 		String homedir = saveFolder+"/"+year+"-"+month+"-"+date;
 		
-		//homedir¿¡ file °´Ã¼ »ı¼º
+		//homedirì— file ê°ì²´ ìƒì„±
 		File path1 = new File(homedir);
 		
 		if(!path1.isFile()) {
-			System.out.println("ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+			System.out.println("íŒŒì¼ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 		}
 		if(!(path1.exists())) {
-			System.out.println("Æú´õ ¸¸µç´Ù.");
-			path1.mkdir();//»õ·Î¿î Æú´õ¸¦ »ı¼º
+			System.out.println("í´ë” ë§Œë“ ë‹¤.");
+			path1.mkdir();//ìƒˆë¡œìš´ í´ë”ë¥¼ ìƒì„±
 		}
 		
-		//³­¼ö¸¦ ±¸ÇÑ´Ù.
+		//ë‚œìˆ˜ë¥¼ êµ¬í•œë‹¤.
 		Random r=new Random();
 		int random=r.nextInt(100000000);
 		
-		/******È®ÀåÀÚ ±¸ÇÏ±â ½ÃÀÛ******/
+		/******í™•ì¥ì êµ¬í•˜ê¸° ì‹œì‘******/
 		int index = fileName.lastIndexOf(".");
-		//¹®ÀÚ¿­¿¡¼­ Æ¯Á¤ ¹®ÀÚ¿­ÀÇ À§Ä¡ °ª(index)¸¦ ¹İÈ¯ÇÑ´Ù.
-		//indexOf°¡ Ã³À½ ¹ß°ßµÇ´Â ¹®ÀÚ¿­¿¡ ´ëÇÑ index¸¦ ¹İÈ¯ÇÏ´Â ¹İ¸é
-		//lastIndexOf´Â ¸¶Áö¸·À¸·Î ¹ß°ßµÇ´Â ¹®ÀÚ¿­ÀÇ index¸¦ ¹İÈ¯ÇÑ´Ù.
-		//(ÆÄÀÏ¸í¿¡ Á¡ÀÌ ¿©·¯°³ ÀÖÀ» °æ¿ì ¸Ç¸¶Áö¸·¿¡ ¹ß°ßµÇ´Â ¹®ÀÚ¿­ÀÇ À§Ä¡¸¦ ¸®ÅÏÇÑ´Ù.)
+		//ë¬¸ìì—´ì—ì„œ íŠ¹ì • ë¬¸ìì—´ì˜ ìœ„ì¹˜ ê°’(index)ë¥¼ ë°˜í™˜í•œë‹¤.
+		//indexOfê°€ ì²˜ìŒ ë°œê²¬ë˜ëŠ” ë¬¸ìì—´ì— ëŒ€í•œ indexë¥¼ ë°˜í™˜í•˜ëŠ” ë°˜ë©´
+		//lastIndexOfëŠ” ë§ˆì§€ë§‰ìœ¼ë¡œ ë°œê²¬ë˜ëŠ” ë¬¸ìì—´ì˜ indexë¥¼ ë°˜í™˜í•œë‹¤.
+		//(íŒŒì¼ëª…ì— ì ì´ ì—¬ëŸ¬ê°œ ìˆì„ ê²½ìš° ë§¨ë§ˆì§€ë§‰ì— ë°œê²¬ë˜ëŠ” ë¬¸ìì—´ì˜ ìœ„ì¹˜ë¥¼ ë¦¬í„´í•œë‹¤.)
 		System.out.println("index="+index);
 		
 		String fileExtension = fileName.substring(index+1);
 		System.out.println("fileExtension = " + fileExtension);
-		/****È®ÀåÀÚ ±¸ÇÏ±â ³¡****/
+		/****í™•ì¥ì êµ¬í•˜ê¸° ë****/
 		
-		//»õ·Î¿î ÆÄÀÏ¸íÀ» ¸¸µç´Ù.
+		//ìƒˆë¡œìš´ íŒŒì¼ëª…ì„ ë§Œë“ ë‹¤.
 		String refileName="auc"+year+month+date+random+"."+fileExtension;
 		System.out.println("refileName = " + refileName);
 		
-		//¿À¶óÅ¬ BD¿¡ ÀúÀåµÉ °ª
+		//ì˜¤ë¼í´ BDì— ì €ì¥ë  ê°’
 		String fileDBName = "/"+year+"-"+month+"-"+date+"/"+refileName;
 		System.out.println("fileDBName = " + fileDBName);
 		
@@ -130,12 +135,20 @@ public class HAction {
 		return "han/test";
 	}
 	
-	@RequestMapping(value="sejin.hh")
-	public String testin (
+	@RequestMapping(value="sejin.hh",produces="text/plain; charset=UTF-8" )
+	@ResponseBody
+	public String testin (HttpServletResponse response,
 			HBean hb
 			) throws Exception {
-		hService.testIn(hb);
-		return "kim/test";
+		
+		System.out.println("ê°’ì€??"+hb.getHval1()+hb.getHval2());
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		String json = ow.writeValueAsString(hb);
+		
+		System.out.println(Charset.forName("UTF-8"));
+		response.setContentType("text/html;charset=UTF-8");
+		response.setCharacterEncoding("text/html;charset=UTF-8");
+		return json;
 	}
 	
 	@RequestMapping(value="main.hh")
@@ -191,50 +204,50 @@ public class HAction {
 		if(!img2.equals("")) {
 			String thumb_dir="D:/final/kh_final/kh_auction/src/main/webapp/"+img2.split(",")[0];
 			
-			System.out.println("½æ³×ÀÏ »ı¼ºÀÌ¹ÌÁöÀÇ ¿øº»°æ·Î:"+thumb_dir);
+			System.out.println("ì¸ë„¤ì¼ ìƒì„±ì´ë¯¸ì§€ì˜ ì›ë³¸ê²½ë¡œ:"+thumb_dir);
 			
 			int index = img2.split(",")[0].lastIndexOf(".");
 		    String fileName = img2.split(",")[0].substring(0, index);
 		    String fileExt = img2.split(",")[0].substring(index + 1);
 			
 		    String thumb_img = makeThumbnail(thumb_dir, fileName.split("/")[fileName.split("/").length-1], fileExt);
-		    System.out.println("ÆÄÀÏ ÀÌ¸§?"+fileName.split("/")[fileName.split("/").length-1]);
+		    System.out.println("íŒŒì¼ ì´ë¦„?"+fileName.split("/")[fileName.split("/").length-1]);
 		    ab.setAuc_img1(thumb_img);
 		}
 		hService.insertAuc(ab);
 		return "han/auction_upload";
 	}
 	
-	//½æ³×ÀÏ »ı¼º ¸Ş¼Òµå
+	//ì¸ë„¤ì¼ ìƒì„± ë©”ì†Œë“œ
 	private String makeThumbnail(String filePath, String fileName, String fileExt)
 			throws Exception {
-		// ÀúÀåµÈ ¿øº»ÆÄÀÏ·ÎºÎÅÍ BufferedImage °´Ã¼¸¦ »ı¼ºÇÕ´Ï´Ù.
+		// ì €ì¥ëœ ì›ë³¸íŒŒì¼ë¡œë¶€í„° BufferedImage ê°ì²´ë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
 		
 		BufferedImage srcImg = ImageIO.read(new File(filePath));
-		// ½æ³×ÀÏÀÇ ³Êºñ¿Í ³ôÀÌ ÀÔ´Ï´Ù.
+		// ì¸ë„¤ì¼ì˜ ë„ˆë¹„ì™€ ë†’ì´ ì…ë‹ˆë‹¤.
 		int dw = 500, dh = 300;
-		// ¿øº» ÀÌ¹ÌÁöÀÇ ³Êºñ¿Í ³ôÀÌ ÀÔ´Ï´Ù.
+		// ì›ë³¸ ì´ë¯¸ì§€ì˜ ë„ˆë¹„ì™€ ë†’ì´ ì…ë‹ˆë‹¤.
 		int ow = srcImg.getWidth();
 		int oh = srcImg.getHeight();
-		// ¿øº» ³Êºñ¸¦ ±âÁØÀ¸·Î ÇÏ¿© ½æ³×ÀÏÀÇ ºñÀ²·Î ³ôÀÌ¸¦ °è»êÇÕ´Ï´Ù.
+		// ì›ë³¸ ë„ˆë¹„ë¥¼ ê¸°ì¤€ìœ¼ë¡œ í•˜ì—¬ ì¸ë„¤ì¼ì˜ ë¹„ìœ¨ë¡œ ë†’ì´ë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤.
 		int nw = ow;
 		int nh = (ow * dh) / dw; 
-		// °è»êµÈ ³ôÀÌ°¡ ¿øº»º¸´Ù ³ô´Ù¸é cropÀÌ ¾ÈµÇ¹Ç·Î
-		// ¿øº» ³ôÀÌ¸¦ ±âÁØÀ¸·Î ½æ³×ÀÏÀÇ ºñÀ²·Î ³Êºñ¸¦ °è»êÇÕ´Ï´Ù.
+		// ê³„ì‚°ëœ ë†’ì´ê°€ ì›ë³¸ë³´ë‹¤ ë†’ë‹¤ë©´ cropì´ ì•ˆë˜ë¯€ë¡œ
+		// ì›ë³¸ ë†’ì´ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì¸ë„¤ì¼ì˜ ë¹„ìœ¨ë¡œ ë„ˆë¹„ë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤.
 		if(nh > oh) { nw = (oh * dw) / dh; nh = oh; }
-		// °è»êµÈ Å©±â·Î ¿øº»ÀÌ¹ÌÁö¸¦ °¡¿îµ¥¿¡¼­ crop ÇÕ´Ï´Ù.
+		// ê³„ì‚°ëœ í¬ê¸°ë¡œ ì›ë³¸ì´ë¯¸ì§€ë¥¼ ê°€ìš´ë°ì—ì„œ crop í•©ë‹ˆë‹¤.
 		BufferedImage cropImg =
 				Scalr.crop(srcImg, (ow-nw)/2, (oh-nh)/2, nw, nh);
-		// cropµÈ ÀÌ¹ÌÁö·Î ½æ³×ÀÏÀ» »ı¼ºÇÕ´Ï´Ù.
+		// cropëœ ì´ë¯¸ì§€ë¡œ ì¸ë„¤ì¼ì„ ìƒì„±í•©ë‹ˆë‹¤.
 		BufferedImage destImg = Scalr.resize(cropImg, dw, dh);
-		// ½æ³×ÀÏÀ» ÀúÀåÇÕ´Ï´Ù. ÀÌ¹ÌÁö ÀÌ¸§ ¾Õ¿¡ "T_" ¸¦ ºÙ¿© Ç¥½ÃÇß½À´Ï´Ù.
+		// ì¸ë„¤ì¼ì„ ì €ì¥í•©ë‹ˆë‹¤. ì´ë¯¸ì§€ ì´ë¦„ ì•ì— "T_" ë¥¼ ë¶™ì—¬ í‘œì‹œí–ˆìŠµë‹ˆë‹¤.
 		String thumbName = thumbFolder+"T_" + fileName+"."+fileExt;
 		File thumbFile = new File(thumbName);
 		ImageIO.write(destImg, fileExt.toUpperCase(), thumbFile);
 		
 		return "resources/upload/thumbnail/T_"+fileName+"."+fileExt;
 	}
-	//==============================================================ÀÌ»óÀº ¿Å±èÀ¸·Î °¡´ÉÇÑ ¼öÁ¤ÇÏÁö ¸»°Í.
+	//==============================================================ì´ìƒì€ ì˜®ê¹€ìœ¼ë¡œ ê°€ëŠ¥í•œ ìˆ˜ì •í•˜ì§€ ë§ê²ƒ.
 	
 	
 	@RequestMapping(value="FAQ.hh")
@@ -253,7 +266,7 @@ public class HAction {
 		mv.addObject("cons_list",cons_list);
 		mv.addObject("pages",pages);
 		
-		//´ñ±Û °³¼ö¸¦ °¢°¢ºó¿¡ Ãß°¡ÇÏ¿© Àü¼ÛÇÒ ¼ö ÀÖµµ·Ï ÇÏÀÚ.
+		//ëŒ“ê¸€ ê°œìˆ˜ë¥¼ ê°ê°ë¹ˆì— ì¶”ê°€í•˜ì—¬ ì „ì†¡í•  ìˆ˜ ìˆë„ë¡ í•˜ì.
 		
 		return mv;
 	}
@@ -261,7 +274,8 @@ public class HAction {
 	@RequestMapping(value="cons_detail.hh",method=RequestMethod.GET)
 	public ModelAndView cons_details (
 			@RequestParam("cons_no") int cons_no,
-			HttpServletResponse response
+			HttpServletResponse response,
+			HttpSession session
 			) throws Exception {
 		ModelAndView mv = new ModelAndView("han/cons_details");
 		
@@ -269,7 +283,7 @@ public class HAction {
 		if(cb == null) {
 			response.setCharacterEncoding("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
-			out.println("<script>alert('ÇØ´çÇÏ´Â ¹øÈ£ÀÇ °æ¸Å°¡ ¾ø½À´Ï´Ù.');");
+			out.println("<script>alert('í•´ë‹¹í•˜ëŠ” ë²ˆí˜¸ì˜ ê²½ë§¤ê°€ ì—†ìŠµë‹ˆë‹¤.');");
 			out.println("history.back();</script>");
 			out.close();
 		}
@@ -284,12 +298,13 @@ public class HAction {
 			if(auc_start.compareTo(auc_system)==-1) time_result="can_not_mod";
 		}
 
-		System.out.println("ÀÌÀü"+cb.getCons_content());
+		System.out.println("ì´ì „"+cb.getCons_content());
 		cb.setCons_content(cb.getCons_content().replaceAll("\n","<br>"));
-		System.out.println("ÀÌÈÄ"+cb.getCons_content());
+		System.out.println("ì´í›„"+cb.getCons_content());
 		mv.addObject("time_compare",time_result);
 		mv.addObject("cons",cb);
-		
+		session.setAttribute("user_grade","master");
+		session.setAttribute("user_id","user3");
 		return mv;
 	}
 	
@@ -301,7 +316,7 @@ public class HAction {
 	}
 	
 	@RequestMapping(value="cons_write_ok.hh",method=RequestMethod.POST)
-	public ModelAndView cons_write_ok (HConsBean cb,
+	public String cons_write_ok (HConsBean cb,
 			HttpServletRequest request,
 			HttpServletResponse response,
 			HttpSession session
@@ -322,20 +337,19 @@ public class HAction {
 		if(!img2.equals("")) {
 			String thumb_dir="D:/final/kh_final/kh_auction/src/main/webapp/"+img2.split(",")[0];
 			
-			System.out.println("½æ³×ÀÏ »ı¼ºÀÌ¹ÌÁöÀÇ ¿øº»°æ·Î:"+thumb_dir);
+			System.out.println("ì¸ë„¤ì¼ ìƒì„±ì´ë¯¸ì§€ì˜ ì›ë³¸ê²½ë¡œ:"+thumb_dir);
 			
 			int index = img2.split(",")[0].lastIndexOf(".");
 		    String fileName = img2.split(",")[0].substring(0, index);
 		    String fileExt = img2.split(",")[0].substring(index + 1);
 			
 		    String thumb_img = makeThumbnail(thumb_dir, fileName.split("/")[fileName.split("/").length-1], fileExt);
-		    System.out.println("ÆÄÀÏ ÀÌ¸§?"+fileName.split("/")[fileName.split("/").length-1]);
+		    System.out.println("íŒŒì¼ ì´ë¦„?"+fileName.split("/")[fileName.split("/").length-1]);
 		    cb.setCons_img1(thumb_img);
 		}
 		hService.insertcons(cb);
 		
-		ModelAndView mv = new ModelAndView("han/cons_list");
-		return mv;
+		return "redirect:cons_list.hh";
 	}
 	
 	@RequestMapping(value="cons_del.hh",method=RequestMethod.POST)
@@ -361,8 +375,8 @@ public class HAction {
 				image_remover(cb.getCons_img2().split(","));
 			}
 		}
-		System.out.println(del_count + "cons_del() ¿¡¼­ Áö¿öÁø ÄÃ·³ ¼ö ¸®ÅÏ °ª");
-		System.out.println(answer + "cons_del() ¿¡¼­ answer?");
+		System.out.println(del_count + "cons_del() ì—ì„œ ì§€ì›Œì§„ ì»¬ëŸ¼ ìˆ˜ ë¦¬í„´ ê°’");
+		System.out.println(answer + "cons_del() ì—ì„œ answer?");
 		return answer;
 	}
 	
@@ -382,7 +396,7 @@ public class HAction {
 			HConsBean cb,
 			@RequestParam("img_control") String img_control
 			) throws Exception {
-		//ÄÜ½º ÀÌ¹ÌÁö »õ·Î ¿Ã¸®±â
+		//ì½˜ìŠ¤ ì´ë¯¸ì§€ ìƒˆë¡œ ì˜¬ë¦¬ê¸°
 		if(img_control.equals("img_change")) {
 			if(cb.getCons_img1() != null || !cb.getCons_img1().trim().equals("")) image_remover(cb.getCons_img1());
 			if(cb.getCons_img2() != null) image_remover(cb.getCons_img2().split(","));
@@ -401,17 +415,17 @@ public class HAction {
 			if(!img2.equals("")) {
 				String thumb_dir="D:/final/kh_final/kh_auction/src/main/webapp/"+img2.split(",")[0];
 				
-				System.out.println("½æ³×ÀÏ »ı¼ºÀÌ¹ÌÁöÀÇ ¿øº»°æ·Î:"+thumb_dir);
+				System.out.println("ì¸ë„¤ì¼ ìƒì„±ì´ë¯¸ì§€ì˜ ì›ë³¸ê²½ë¡œ:"+thumb_dir);
 				
 				int index = img2.split(",")[0].lastIndexOf(".");
 			    String fileName = img2.split(",")[0].substring(0, index);
 			    String fileExt = img2.split(",")[0].substring(index + 1);
 				
 			    String thumb_img = makeThumbnail(thumb_dir, fileName.split("/")[fileName.split("/").length-1], fileExt);
-			    System.out.println("ÆÄÀÏ ÀÌ¸§?"+fileName.split("/")[fileName.split("/").length-1]);
+			    System.out.println("íŒŒì¼ ì´ë¦„?"+fileName.split("/")[fileName.split("/").length-1]);
 			    cb.setCons_img1(thumb_img);
 			}
-			//ÄÜ½º ÀÌ¹ÌÁö Ãß°¡ÇÏ±â
+			//ì½˜ìŠ¤ ì´ë¯¸ì§€ ì¶”ê°€í•˜ê¸°
 		}else if(img_control.equals("img_add")) {
 			String img2 = "";
 			if(!cb.getCons_img2().trim().equals("") && cb.getCons_img2()!= null) img2 += ",";
@@ -428,7 +442,7 @@ public class HAction {
 		return "han/cons_detail?cons_no="+cb.getCons_no();
 	}
 	
-	//¿À¹ö·ÎµùÀ» ÅëÇÑ ¹è¿­/´ÜÀÏ ÀÌ¹ÌÁö »èÁ¦
+	//ì˜¤ë²„ë¡œë”©ì„ í†µí•œ ë°°ì—´/ë‹¨ì¼ ì´ë¯¸ì§€ ì‚­ì œ
 	public void image_remover(String[] img2) {
 		for(int i=0;i<img2.length;i++) {
 			image_remove_task(saveFolder,img2[i]);
@@ -440,24 +454,55 @@ public class HAction {
 	
 	public void image_remove_task(String savedir,String save_file) {
 		File DelFile=new File(savedir+save_file);
-		if(DelFile.exists()) {//±âÁ¸ ÀÌÁø ÆÄÀÏÀÌ Á¸ÀçÇÏ¸é
-			System.out.println("»èÁ¦ ÆÄÀÏ:"+DelFile.getPath());
-			DelFile.delete();//±âÁ¸ ÆÄÀÏ »èÁ¦
+		if(DelFile.exists()) {//ê¸°ì¡´ ì´ì§„ íŒŒì¼ì´ ì¡´ì¬í•˜ë©´
+			System.out.println("ì‚­ì œ íŒŒì¼:"+DelFile.getPath());
+			DelFile.delete();//ê¸°ì¡´ íŒŒì¼ ì‚­ì œ
 		}
 	}
 
-	//constraint detail °¡·ÎÅÇ°ú ¾ÆÀÌÄÜ ¾÷±ÛÇÏ±â.
-	@RequestMapping(value="cons_detail_upgrade.hh",method=RequestMethod.GET)
-	@ResponseBody
-	public Object cons_detail_upgrade (
-			HConsUpgradeBean cub
-			) throws Exception {
-		
-		hService.consdataupdate(cub);
-		cub=hService.consupdatereturn(cub);
-		
-		return cub;
-	}
+	//constraint detail ê°€ë¡œíƒ­ê³¼ ì•„ì´ì½˜ ì—…ê¸€í•˜ê¸°.
+	
+	
+	  @RequestMapping(value="cons_detail_upgrade.hh")	  
+	  @ResponseBody public Map<String,String> cons_detail_upgrade ( HConsUpgradeBean cub ,  HttpServletResponse response)
+	  throws Exception {
+		  response.setContentType("text/html;charset=UTF-8");
+	  hService.consdataupdate(cub); cub=hService.consupdatereturn(cub);
+	  
+	  System.out.println("ì „ë‹¬ë°›ëŠ” detail infos:"+
+	  cub.getAuc_interval()+"/"+cub.getAuc_price()+"/"+
+	  cub.getButton_info()+"/"+cub.getCons_ans()+"/"+
+	  cub.getCons_ant_price()+"/"+cub.getCons_commit()+"/"+
+	  cub.getCons_go_content()+"/"+cub.getCons_go_date()+"/"+
+	  cub.getCons_no()+"/"+cub.getCons_result1()+"/"+
+	  cub.getCons_result2()+"/"+cub.getCons_result2_date()+"/"+
+	  cub.getCons_go_time_f()+"/"+cub.getCons_go_time_t()+"/"+
+	  cub.getIdentify_update()+"/"); System.out.println(); System.out.println(cub);
+	  
+	  Map<String,String> adsf = new HashMap<String,String>();
+	  adsf.put("ininin","inininin");
+	  
+	  return adsf;
+	  
+	  }
+	 
+	 
+	 
+	
+	
+	/*
+	 * @RequestMapping(value="cons_detail_upgrade.hh")
+	 * 
+	 * @ResponseBody public String cons_detail_upgrade() { return "í•˜í•˜"; }
+	 */
+	 
+	  
+	  @RequestMapping(value="/test")
+		@ResponseBody
+		public String test(HttpServletResponse response) {
+		  response.setContentType("text/html;charset=UTF-8");
+			return "hohoã…í•˜ã…í•˜";
+		}
 }
 
 

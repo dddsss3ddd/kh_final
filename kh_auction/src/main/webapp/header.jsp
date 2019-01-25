@@ -39,7 +39,7 @@
                     <li class="active"><a href="jsp/main/main.jsp">Home</a></li>
                     <li class="dropdown"><a href="jsp/main/#">Auction! <i class="fa fa-angle-down"></i></a>
                         <ul role="menu" class="sub-menu">
-	                        <li><a href="jsp/main/service.jsp">정기 경매</a></li>
+	                        <li><a href="sejin_in.hh">정기 경매</a></li>
                             <li><a href="jsp/main/aboutus.jsp">실시간 경매</a></li>
                             <li><a href="jsp/main/aboutus2.jsp">깜깜이 경매</a></li>
                             <li><a href="jsp/main/pricing.jsp">경매 검색</a></li>

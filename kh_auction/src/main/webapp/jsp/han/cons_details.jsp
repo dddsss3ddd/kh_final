@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" 
            uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +37,9 @@
 <body>
 	<jsp:include page="../../header.jsp"/>
     <!--/#header-->
-
+<script>
+alert('${user_grade}');
+</script>
 
     <section id="page-breadcrumb">
         <div class="vertical-center sun">
@@ -126,8 +130,8 @@
                                     	</c:otherwise>
                                     </c:choose>
                                     	<tr>
-	                                    	<td><a href="#"><i class="fa fa-calendar-o" style="margin-right:55px;"></i><c:out value="${not empty cons.cons_result1_date ? cons.cons_result1_date:'-'}"/></a></td>
-	                                    	<td><a href="#"><i class="fa fa-calendar-o" style="margin-right:55px;"></i><c:out value="${not empty cons.cons_result2_date ? cons.cons_result1_date:'-'}"/></a></td>
+	                                    	<td><a href="#"><i class="fa fa-calendar-o" ></i><c:out value="${not empty cons.cons_result1_date ? cons.cons_result1_date:'-'}"/></a></td>
+	                                    	<td><a href="#"><i class="fa fa-calendar-o" ></i><c:out value="${not empty cons.cons_result2_date ? cons.cons_result2_date:'-'}"/></a></td>
 	                                    	<td></td>
 	                                    </tr>
                                     	</table>
@@ -150,8 +154,8 @@
                 <div class="col-md-3 col-sm-5">
                     <div class="sidebar blog-sidebar">
                         <div class="sidebar-item  recent">
-	                        <c:if test="${cons.cons_result1 =='accept' and not empty cons.cons_go_date}">
-	                            <c:if test="${user_id==cons_id}">
+	                        <c:if test="${cons.cons_result1 =='accept' and empty cons.cons_go_date}">
+	                            <c:if test="${user_id==cons.cons_id}">
 		                            <h3>감정 날짜 선택</h3>
 		                            <br>
 			                            <input type="date" style="width:100%; height:50px; font-size:30px; color:darkgray;" id="cons_go_date">
@@ -170,7 +174,16 @@
 	                            	<h3>위탁 절차를 진행중입니다.</h3>
 	                            </c:if>
 	                        </c:if>
-	                        <c:if test="${cons.cons_result1 =='yet'}">
+	                        <c:if test="${cons.cons_result1 =='accept' and !empty cons.cons_go_date}">
+	                            <c:if test="${user_id==cons.cons_id}">
+		                            <h3>감정 을 진행중입니다.</h3>
+		                            <br>
+	                            </c:if>
+	                            <c:if test="${user_id != cons_id}">
+	                            	<h3>위탁 절차를 진행중입니다.</h3>
+	                            </c:if>
+	                        </c:if>
+	                        <c:if test="${cons.cons_result1 =='yet' }">
 	                        	<c:if test="${user_grade !='master' and user_grade != 'admin' }">
 		                        	<h3>작성 내용을 검토중입니다.</h3>
 		                        	<p>등록하신 내용을 바탕으로 경매 물품에 대해 검토하는 중입니다. 이 과정은 며칠이 걸릴 수 있습니다.</p>
@@ -193,16 +206,16 @@
 		                            <tr><td style="height:50px;">감정가 : <input type="number" id="values_" class="price pstart antp" value="${cons.cons_ant_price}" style="font-size:30px;border:0;"></td></tr>
 		                            <tr><td style="height:30px;text-align:center;font-size:20px;" class="start_kor pstart antp">한글 숫자값</td></tr>
 		                            <tr><td colspan="2" style="text-align:center;">감정가 설명</td></tr>
-		                            <tr><td colspan="2"><p>${cons.cons_ans}</p></td></tr>
+		                            <tr><td colspan="2"><textarea rows="10" style="width:87%;" id="values_info">${cons.cons_ans}</textarea></td></tr>
 	                            </table>
 	                            <button style="width:100%" class="btn btn-lg btn-warning identify_update" value="ant_update">감정가 수정</button>
                             </c:if>
                             <!-- 감정가 0이 아니고 관리자 계정이 아닐 경우 -->
-                            <c:if test="${cons.cons_ant_price ne 0}">
+                            <c:if test="${cons.cons_ant_price ne 0 and (user_grade !='master' and user_grade !='admin')}">
 	                            <table style="width:100%;">
-		                            <tr><td style="height:50px;">감정가 : <input type="number" id="values_" value="${cons.cons_ant_price}" style="font-size:30px;border:0;" readOnly></td></tr>
+		                            <tr><td style="height:50px;">감정가 : <input type="number" id="values_" value="${cons.cons_ant_price}" class="price pstart antp" style="font-size:30px;border:0;" readOnly></td></tr>
 		                            <tr><td style="height:30px;text-align:center;font-size:20px;" class="start_kor pstart antp">한글 숫자값</td></tr>
-		                            <tr><td colspan="2" style="text-align:center;">감정가 설명(빼기 한개로 치환예정)</td></tr>
+		                            <tr><td colspan="2" style="text-align:center;">감정가 설명(빼기 한개로 치환예정 gg)</td></tr>
 		                            <tr><td colspan="2"><p>${cons.cons_ans}</p></td></tr>
 	                            </table>
                             </c:if>
@@ -211,27 +224,27 @@
                             	<c:if test="${user_grade != 'master' and user_grade !='admin'}">
 		                            <table style="width:100%;">
 			                            <tr><td style="height:50px;">감정가 : 
-			                            	<input type="number" id="values_" value="<c:if test="${cons.cons_result1 != 'yet' }"></c:if>"
-			                            		style="font-size:30px; border:0; readOnly">
+			                            	<input type="number" id="values_" value=""
+			                            		style="font-size:30px; border:0;" readOnly>
 			                            </td></tr>
 			                            <tr><td style="height:30px;text-align:center;font-size:20px;">
 											미정
 										</td></tr>
 			                            <tr><td colspan="2" style="text-align:center;">감정가 설명</td></tr>
 			                            <tr><td colspan="2">
-			                            	<c:out value="${cons.cons_result1 == 'yet'?'아직 감정을 진행중입니다.': cons.cons_ans }"/>
+			                            	<c:out value="${cons.cons_result2 == 'yet'?'아직 감정을 진행중입니다.': cons.cons_ans }"/>
 			                            </td></tr>
 		                            </table>
 	                            </c:if>
 	                            <c:if test="${user_grade == 'master' or user_grade =='admin'}">
 		                            <table style="width:100%;">
 			                            <tr><td style="height:50px;">감정가 : <input type="number" id="values_" class="price pstart antp" value="" style="font-size:30px; border:0;width:100%"></td></tr>
-			                            <tr><td style="height:30px;text-align:center;font-size:20px;" class="start_kor pstart antp">한글 숫자값(널마스터)</td></tr>
+			                            <tr><td style="height:30px;text-align:center;font-size:20px;" class="start_kor pstart antp">한글 숫자값</td></tr>
 			                            <tr><td colspan="2" style="text-align:center;">감정가 설명</td></tr>
 			                            <tr><td colspan="2"><textarea rows="10" style="width:100%;" id="values_info"></textarea></td></tr>
 		                            </table>
-		                            <button style="width:70%" class="btn btn-lg btn-success identify_result" value="ant_in_accept">감정가 입력/위탁 승인</button>
-		                            <button style="width:29%" class="btn btn-lg btn-success identify_result" value="ant_in_deny">감정가 입력/위탁 거부</button>
+		                            <button style="width:49%" class="btn btn-lg btn-success identify_result" value="ant_in_accept">입력 및 승인</button>
+		                            <button style="width:49%" class="btn btn-lg btn-danger identify_result" value="ant_in_deny">입력 및 거부</button>
 	                            </c:if>
                             </c:if>
                         </div>
@@ -245,29 +258,38 @@
                              - 입찰단위는 자체 연구결과에 따라 이상적인 가격(입찰가의 2%. 단, 최소값은 1000원)로 산정합니다. 
                             </p>
                         </div>
-                        <c:if test="${cons.cons_result2 =='accept' and cons.cons_commit == 'no' and user_id == cons_id}">
+                        <c:if test="${cons.cons_result2 =='accept' and cons.cons_commit == 'yet' and user_id == cons.cons_id}">
 	                        <div class="sidebar-item popular">
 	                            <h3>nth 정기 경매에 등록합니다.</h3>
 	                            <p>시작가:<input type="number" min="0" max="999999999999" value="${cons.cons_ant_price*0.7}" id="auc_price" class="price pstart wantp"></p>
 	                            <p class="price_kor pstart wantp">한글 숫자 표시</p>
 	                            <p>단위: <input type="number" min="0" max="1000000000" 
-	                            		value="${cons.cons_ant_price*0.7*0.02-(cons.cons_ant_price*0.7*0.02%1)>'1000' ? (cons.cons_ant_price*0.7*0.02-(cons.cons_ant_price*0.7*0.02%1000)):'1000'}"
+	                            		value="${cons.cons_ant_price*0.7*0.02-(cons.cons_ant_price*0.7*0.02)%1>'1000' ? (cons.cons_ant_price*0.7*0.02-(cons.cons_ant_price*0.7*0.02)%1000):'1000'}"
 	                            		id="auc_interval"
-	                            		class="price pinter wantp"
-	                            		></p>
+	                            		class="price pinter wantp"></p>
 	                            <p class="price_kor pinter wantp">한글 숫자 표시</p>
-	                            <button style="width:50%;" class="btn btn-lg btn-success consignment" value="cons_accept">위탁 경매 승인</button>
-	                            <button style="width:50%;" class="btn btn-lg btn-danger consignment" value="cons_deny">위탁 경매 취소</button>
+	                            <button style="width:49%;" class="btn btn-lg btn-success consignment" value="cons_accept">경매 승인</button>
+	                            <button style="width:49%;" class="btn btn-lg btn-danger consignment" value="cons_deny">경매 취소</button>
 	                        </div>
                         </c:if>
                         <c:if test="${cons.cons_result2 =='accept' and cons.cons_commit == 'yes'}">
 	                        <div class="sidebar-item popular">
 	                            <h3>nth 정기 경매에 등록하였습니다.</h3>
-	                            <p class="price pstart wantp">시작가:100000000000</p>
+	                            <p >시작가:<input type="number" class="price pstart wantp" value="${cons.auc_price}" style="border:0;" readOnly>원</p>
 	                            <p class="price_kor pstart wantp">한글 숫자 표시</p>
-	                            <p class="price pinter wantp">단위:100000000000</p>
+	                            <p >단위:<input type="number" value="${cons.auc_interval}"  class="price pinter wantp" readOnly>원</p>
 	                            <p class="price_kor pinter wantp">한글 숫자 표시</p>
 	                            <button style="width:100%;" class="btn btn-lg btn-success" disabled>등록 완료</button>
+	                        </div>
+                        </c:if>
+                        <c:if test="${cons.cons_result2 =='accept' and cons.cons_commit == 'no'}">
+	                        <div class="sidebar-item popular">
+	                            <h3>nth 정기 경매등록을 취소했습니다.</h3>
+	                            <p >시작가:<input type="number" class="price pstart wantp" value="${cons.auc_price}" style="border:0;" readOnly>원</p>
+	                            <p class="price_kor pstart wantp">한글 숫자 표시</p>
+	                            <p >단위:<input type="number" value="${cons.auc_interval}"  class="price pinter wantp" readOnly>원</p>
+	                            <p class="price_kor pinter wantp">한글 숫자 표시</p>
+	                            <button style="width:100%;" class="btn btn-lg btn-success" disabled>등록 취소</button>
 	                        </div>
                         </c:if>
                     </div>
@@ -281,11 +303,11 @@
     <!--/#footer-->
 
 
-    <script type="text/javascript" src="resources/js/jquery.js"></script>
+    <script type="text/javascript" src="resources/js/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="resources/js/lightbox.min.js"></script>
     <script type="text/javascript" src="resources/js/wow.min.js"></script>
-    <script type="text/javascript" src="resources/js/main.js"></script>
+ <!--    <script type="text/javascript" src="resources/js/main.js"></script> -->
     <script type="text/javascript" src="resources/_jin/cons_detail.js"></script> 
 </body>
 </html>

@@ -23,7 +23,7 @@ public class HConsBean {
 	private String cons_go_content;
 	private String cons_result2;
 	private String cons_result2_date;
-	private int cons_ant_price;
+	private long cons_ant_price;
 	private String cons_ans;
 	private int comments_count;
 	private String cons_commit;
@@ -141,10 +141,10 @@ public class HConsBean {
 	public void setCons_result2_date(String cons_result2_date) {
 		this.cons_result2_date = cons_result2_date;
 	}
-	public int getCons_ant_price() {
+	public long getCons_ant_price() {
 		return cons_ant_price;
 	}
-	public void setCons_ant_price(int cons_ant_price) {
+	public void setCons_ant_price(long cons_ant_price) {
 		this.cons_ant_price = cons_ant_price;
 	}
 	public String getCons_ans() {
