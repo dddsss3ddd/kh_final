@@ -29,14 +29,14 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <a class="navbar-brand" href="jsp/main/main.jsp">
+                <a class="navbar-brand" href="main.hh">
                 	<h1><img src="resources/images/logo.png" alt="logo"></h1>
                 </a>
                 
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="jsp/main/main.jsp">Home</a></li>
+                    <li class="active"><a href="main.hh">Home</a></li>
                     <li class="dropdown"><a href="jsp/main/#">Auction! <i class="fa fa-angle-down"></i></a>
                         <ul role="menu" class="sub-menu">
 	                        <li><a href="sejin_in.hh">정기 경매</a></li>

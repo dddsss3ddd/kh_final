@@ -14,107 +14,6 @@ $(function(){
 		$(this).css('padding','10px').css('background','#a5732a');
 	});
 
-	/*
-	$('.blog-sidebar').on('click','button',function(){
-		
-		var up_info = new Object();
-		up_info.cons_no=$('#cons_no').val();
-		var message = ' ';
-		up_info.button_info = $(this).val();
-		//감정 승인 or 거절
-		if($(this).hasClass('identify')){
-			message += '감정신청을 ';
-			if(up_info.button_info=='indentify_accept') {
-				message += '승인';
-				up_info.cons_result1='accept';
-			}else {
-				message += '거절';
-				up_info.cons_result1='deny';
-			}
-		}
-		var empty_space = "";
-		
-		//감정 승인이후의 사용자 날짜시간 선택
-		if($(this).hasClass('identify_date')){ //각각이 비어있는지 아닌지 확인해야함. 아직 안함.
-			up_info.cons_go_date=$('#cons_go_date').val();
-			if($('#cons_go_date').val() == "" || $('#cons_go_date').val() ==null) empty_space = '#cons_go_date';
-			up_info.cons_go_time_f=$('#i_s_time').val();
-			if($('#i_s_time').val() == "" || $('#i_s_time').val() == null) empty_space = '#i_s_time';
-			up_info.cons_go_time_t=$('#i_e_time').val();
-			if($('#i_e_time').val() == "" ||$('#i_e_time').val() ==  null) empty_space = '#i_e_time';
-			
-			message += '감정 신청 날짜를 입력';
-		}
-		
-		//해당 시간에 방문/파견 을 통해 감정후 추정 예상가 입력
-		if($(this).hasClass('identify_result')){
-			up_info.cons_ant_price=$('#values_').val();
-			if($('#values_').val() == "" || $('#values_').val() == null) empty_space = '#values_';
-			up_info.cons_ans=$('#values_info').val();
-			if($('#values_info').val() == "" || $('#values_info').val() == null) empty_space = '#values_info';
-			
-			message += '추정 가격을 입력';
-		}
-		
-		//추정가 업데이트
-		if($(this).hasClass('identify_update')){
-			up_info.identify_update=$('#identify_update').val();
-			if($('#identify_update').val() == "" || $('#identify_update').val() == null) empty_space = '#identify_update';
-			up_info.cons_ant_price=$('#values_').val();
-			if($('#values_').val() == "" || $('#values_').val() == null) empty_space = '#values_';
-			up_info.cons_ans=$('#values_info').val();
-			if($('#values_info').val() == "" || $('#values_info').val() == null) empty_space = '#values_info';
-			
-			message += '새로운 추정 가격을 입력';
-		}
-		
-		//위탁을 신청하기
-		if($(this).hasClass('consignment')){
-			up_info.auc_price=$('#auc_price').val();
-			if($('#auc_price').val() == "" || $('#auc_price').val() == null) empty_space = '#auc_price';
-			up_info.auc_interval=$('#auc_interval').val();
-			if($('#auc_interval').val() == "" || $('#auc_interval').val() == null) empty_space = '#auc_interval';
-			
-			message += '위탁 신청을 ';
-			if($(this).val() == 'cons_accept') {
-				message += '확정';
-				up_info.cons_commit='accept';
-			}
-			else message += '취소';
-			up_info.cons_commit='deny';
-		}
-		
-		message += '하시겠습니까?';
-		
-		var conf_result = confirm(message);
-		alert(up_info.button_info);
-		if(empty_space != "" && conf_result ){
-			$(empty_space).focus();
-		}else if(conf_result){
-			alert('ajax 시작');
-			
-			var senddata=JSON.stringify(up_info);
-			alert(senddata);
-			//여기서 ajax 호출 아이콘,사이드바 둘다 호출해야함.
-			$.ajax({
-				url : './cons_detail_upgrade.hh',
-				data : senddata,
-				dataType : 'json',
-				type : 'POST',
-				cache : false,
-				success : function(responsedata){
-					//json 형식으로 받아온 값에 대하여.
-					//1. 오른쪽 사이드바를 먼저 갱신한다.
-					var right_sidebar = '';
-					
-				},
-				error:function(data){
-					alert("오류발생");
-				}
-			});
-		}
-	});
-	*/
 	
 $('.blog-sidebar').on('click','button',function(){
 		
@@ -210,7 +109,7 @@ $('.blog-sidebar').on('click','button',function(){
 					alert(responsedata)
 					//json 형식으로 받아온 값에 대하여.
 					//1. 오른쪽 사이드바를 먼저 갱신한다.
-					var right_sidebar = '';
+					history.go(0);
 					
 				},
 				error : function(request, status, error){

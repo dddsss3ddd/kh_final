@@ -158,7 +158,8 @@
                             <input type="radio" name="auc_category1" value="land" id="land"><label for="land">부동산</label>&nbsp;&nbsp;
                             <input type="radio" name="auc_category1" value="jewelry" id="jewelry"><label for="jewelry">귀금속</label>&nbsp;&nbsp;
                             <input type="radio" name="auc_category1" value="clothes" id="clothes"><label for="clothes">의류</label>&nbsp;&nbsp;
-                            <input type="radio" name="auc_category1" value="etc" id="etc"><label for="etc">기타</label>
+                            <input type="radio" name="auc_category1" value="clothes" id="antique"><label for="antique">골동품</label>&nbsp;&nbsp;
+                            <input type="radio" name="auc_category1" value="etc" id="etcetera"><label for="etcetera">기타</label>
                     </div>
                     <c:if test="${user_id eq 'admin'}">
 	                    <div class="client overflow">

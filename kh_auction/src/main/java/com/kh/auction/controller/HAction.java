@@ -8,9 +8,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -35,6 +33,7 @@ import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
 import com.kh.auction.model.HConsBean;
+import com.kh.auction.model.HConsConditionBean;
 import com.kh.auction.model.HConsUpgradeBean;
 
 @Controller
@@ -215,6 +214,8 @@ public class HAction {
 		    ab.setAuc_img1(thumb_img);
 		}
 		hService.insertAuc(ab);
+		hService.insertCat(ab);
+		
 		return "han/auction_upload";
 	}
 	
@@ -258,13 +259,39 @@ public class HAction {
 	
 	@RequestMapping(value="cons_list.hh")
 	public ModelAndView cons_list (
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value="search_condition",required=false,defaultValue="all") String search_condition,
+			@RequestParam(value="selectt",required=false,defaultValue="init") String selectt,
+			HttpSession session
 			) throws Exception {
-		ModelAndView mv = new ModelAndView("han/cons_list");
+		//빈:페이지,사용자 아이디, (검토중, 감정 진행중,위탁절차 진행중, 위탁신청 완료)
+		HConsConditionBean ccb = new HConsConditionBean();
+		ccb.setPage(page);
+		ccb.setCons_id((String) session.getAttribute("user_id"));
+		ccb.setSearch_condition(search_condition);
+		List<HConsBean> cons_list = hService.getconslist(ccb);
+		int pages=hService.getconslistno(ccb);
+
 		
-		List<HConsBean> cons_list = hService.getconslist();
-		int pages = hService.getconslistno();
+		String direction="han/cons_list";
+		if(selectt.equals("tab")) direction = "han/cons_list_tab";
+		else if(selectt.equals("page")) direction = "han/cons_list_page";
+
+		int s_page=1;
+		int e_page=pages;
+		
+		if(pages>1) {
+			if(page-3>1) s_page=page-3;
+			if(page+4<pages) e_page=page+4;
+		}
+		System.out.println("페이지 정보:페이지개수,현재페이지,시작페이지,끝페이지"+","+pages+","+page+","+s_page+","+e_page);
+		ModelAndView mv = new ModelAndView(direction);
+		mv.addObject("search_condition",search_condition);
 		mv.addObject("cons_list",cons_list);
 		mv.addObject("pages",pages);
+		mv.addObject("page",page);
+		mv.addObject("s_page",s_page);
+		mv.addObject("e_page",e_page);
 		
 		//댓글 개수를 각각빈에 추가하여 전송할 수 있도록 하자.
 		
@@ -298,9 +325,7 @@ public class HAction {
 			if(auc_start.compareTo(auc_system)==-1) time_result="can_not_mod";
 		}
 
-		System.out.println("이전"+cb.getCons_content());
 		cb.setCons_content(cb.getCons_content().replaceAll("\n","<br>"));
-		System.out.println("이후"+cb.getCons_content());
 		mv.addObject("time_compare",time_result);
 		mv.addObject("cons",cb);
 		session.setAttribute("user_grade","master");
@@ -348,8 +373,9 @@ public class HAction {
 		    cb.setCons_img1(thumb_img);
 		}
 		hService.insertcons(cb);
-		
-		return "redirect:cons_list.hh";
+		//여기 다시 돌리기
+		//return "redirect:cons_list.hh";
+		return "redirect:main.hh";
 	}
 	
 	@RequestMapping(value="cons_del.hh",method=RequestMethod.POST)
@@ -464,7 +490,7 @@ public class HAction {
 	
 	
 	  @RequestMapping(value="cons_detail_upgrade.hh")	  
-	  @ResponseBody public Map<String,String> cons_detail_upgrade ( HConsUpgradeBean cub ,  HttpServletResponse response)
+	  @ResponseBody public String cons_detail_upgrade ( HConsUpgradeBean cub ,  HttpServletResponse response)
 	  throws Exception {
 		  response.setContentType("text/html;charset=UTF-8");
 	  hService.consdataupdate(cub); cub=hService.consupdatereturn(cub);
@@ -479,30 +505,15 @@ public class HAction {
 	  cub.getCons_go_time_f()+"/"+cub.getCons_go_time_t()+"/"+
 	  cub.getIdentify_update()+"/"); System.out.println(); System.out.println(cub);
 	  
-	  Map<String,String> adsf = new HashMap<String,String>();
-	  adsf.put("ininin","inininin");
-	  
-	  return adsf;
+	  return "1";
 	  
 	  }
 	 
 	 
 	 
-	
-	
-	/*
-	 * @RequestMapping(value="cons_detail_upgrade.hh")
-	 * 
-	 * @ResponseBody public String cons_detail_upgrade() { return "하하"; }
-	 */
-	 
+
 	  
-	  @RequestMapping(value="/test")
-		@ResponseBody
-		public String test(HttpServletResponse response) {
-		  response.setContentType("text/html;charset=UTF-8");
-			return "hohoㅎ하ㅏ하";
-		}
+	  
 }
 
 

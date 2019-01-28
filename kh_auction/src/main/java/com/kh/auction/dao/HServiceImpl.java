@@ -9,6 +9,7 @@ import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
 import com.kh.auction.model.HConsBean;
+import com.kh.auction.model.HConsConditionBean;
 import com.kh.auction.model.HConsUpgradeBean;
 
 @Service("hService")
@@ -65,13 +66,13 @@ public class HServiceImpl implements HService {
 	}
 
 	@Override
-	public List<HConsBean> getconslist() throws Exception {
-		return hanDAO.getconslist();
+	public List<HConsBean> getconslist(HConsConditionBean ccb) throws Exception {
+		return hanDAO.getconslist(ccb);
 	}
 
 	@Override
-	public int getconslistno() throws Exception {
-		int instno = hanDAO.getconslistno();
+	public int getconslistno(HConsConditionBean ccb) throws Exception {
+		int instno = hanDAO.getconslistno(ccb);
 		
 		return (instno-1)/6 + 1 ;
 	}
@@ -99,5 +100,11 @@ public class HServiceImpl implements HService {
 	@Override
 	public HConsUpgradeBean consupdatereturn(HConsUpgradeBean cub) throws Exception {
 		return hanDAO.consupdatereturn(cub);
+	}
+
+	@Override
+	public void insertCat(HAucBean ab) throws Exception {
+		hanDAO.insertCat(ab);
+		
 	}
 }

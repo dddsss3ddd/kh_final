@@ -46,7 +46,8 @@
 		<typeAlias alias="haucbean"	type="com.kh.auction.model.HAucBean" />
 		<typeAlias alias="hconbean"	type="com.kh.auction.model.HConsBean" />
 		<typeAlias alias="hcubean"	type="com.kh.auction.model.HConsUpgradeBean" />
-		
+		<typeAlias alias="hconscondi"	type="com.kh.auction.model.HConsConditionBean" />
+
 	</typeAliases>
 <!-- sqlxml은 수정하지 않습니다. -->
 	<mappers>

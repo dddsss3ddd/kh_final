@@ -66,12 +66,64 @@
 		)
 	</insert>
 	
-	<select id="getconslist" resultType="hconbean">
-		select * from consignment order by cons_no desc
+	<select id="getconslist" resultType="hconbean" parameterType="hconscondi">
+		select * from (
+			select rownum rnum,cons_no,cons_id,cons_title,cons_img1,cons_img2,
+			cons_content,cons_gua,gua_info,cons_price,cons_date,cons_result1,
+			cons_result1_date,cons_go_date,cons_go_time_f,cons_go_time_t,
+			cons_go_content,cons_result2,cons_result2_date,cons_ant_price,
+			cons_ans,cons_commit,cons_auc_no,auc_price,auc_interval
+			from	(	select * from consignment
+				
+				<if test="search_condition=='id' and user_id != null">
+					where cons_id=#{user_id}
+				</if>
+				<if test="search_condition=='viewing'">
+					where cons_result1='yet'
+				</if>
+				<if test="search_condition=='identifying'">
+					where cons_result1='accept'
+					and cons_result2='yet'
+				</if>
+				<if test="search_condition=='consigning'">
+					where cons_result1='accept'
+					and cons_result2='accept'
+					and cons_commit='yet'
+				</if>
+				<if test="search_condition=='conplete'">
+					where cons_result1='accept'
+					and cons_result2='accept'
+					and cons_commit='accept'
+				</if>
+
+						order by cons_no desc))
+		where rnum &gt;= ((#{page}-1)*6+1)
+					and rnum &lt;= (#{page}*6)
+
 	</select>
 	
-	<select id="getconslistno" resultType="int">
+	<select id="getconslistno" resultType="int" parameterType="hconscondi">
 		select count(*) from consignment
+			<if test="search_condition=='id'">
+				where cons_id=#{user_id}
+			</if>
+			<if test="search_condition=='viewing'">
+				where cons_result1='yet'
+			</if>
+			<if test="search_condition=='identifying'">
+				where cons_result1='accept'
+				and cons_result2='yet'
+			</if>
+			<if test="search_condition=='consigning'">
+				where cons_result1='accept'
+				and cons_result2='accept'
+				and cons_commit='yet'
+			</if>
+			<if test="search_condition=='conplete'">
+				where cons_result1='accept'
+				and cons_result2='accept'
+				and cons_commit='accept'
+			</if>
 	</select>
 	
 	<select id="getconsdetail" parameterType="int" resultType="hconbean">
@@ -135,5 +187,7 @@
 			auc_price,auc_interval
 		from consignment where cons_no=#{cons_no}
 	</select>
-	
+	<insert id="insertCat" parameterType="haucbean">
+		insert into auction_category(auc_no,auc_category1) values(#{auc_no},#{auc_category1})
+	</insert>
 </mapper>

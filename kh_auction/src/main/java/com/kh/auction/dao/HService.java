@@ -5,6 +5,7 @@ import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
 import com.kh.auction.model.HConsBean;
+import com.kh.auction.model.HConsConditionBean;
 import com.kh.auction.model.HConsUpgradeBean;
 public interface HService {
 	/*자료실 저장*/
@@ -27,9 +28,9 @@ public interface HService {
 	
 	public void insertcons(HConsBean cb) throws Exception;
 	
-	public List<HConsBean> getconslist() throws Exception;
+	public List<HConsBean> getconslist(HConsConditionBean ccb) throws Exception;
 
-	public int getconslistno() throws Exception;
+	public int getconslistno(HConsConditionBean ccb) throws Exception;
 
 	public HConsBean getconsdetail(int cons_no) throws Exception;
 
@@ -40,5 +41,7 @@ public interface HService {
 	public void consdataupdate(HConsUpgradeBean cub) throws Exception;
 
 	public HConsUpgradeBean consupdatereturn(HConsUpgradeBean cub) throws Exception;
+
+	public void insertCat(HAucBean ab) throws Exception;
 	
 }

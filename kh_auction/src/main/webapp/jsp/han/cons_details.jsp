@@ -303,7 +303,7 @@ alert('${user_grade}');
     <!--/#footer-->
 
 
-    <script type="text/javascript" src="resources/js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="resources/js/jquery.js"></script>
     <script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="resources/js/lightbox.min.js"></script>
     <script type="text/javascript" src="resources/js/wow.min.js"></script>

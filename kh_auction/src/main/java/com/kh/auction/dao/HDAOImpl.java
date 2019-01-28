@@ -11,6 +11,7 @@ import com.kh.auction.model.BbsBean_sample;
 import com.kh.auction.model.HAucBean;
 import com.kh.auction.model.HBean;
 import com.kh.auction.model.HConsBean;
+import com.kh.auction.model.HConsConditionBean;
 import com.kh.auction.model.HConsUpgradeBean;
 /*
 @Component를 이용해서 스프링 컨테이너가 해당 클래스 객체를 생성하도록 설정할 수 있지만
@@ -67,12 +68,12 @@ public class HDAOImpl {
 		sqlSession.insert("Han.insertcons", cb);
 	}
 	
-	public List<HConsBean> getconslist() {
-		return sqlSession.selectList("Han.getconslist");
+	public List<HConsBean> getconslist(HConsConditionBean ccb) {
+		return sqlSession.selectList("Han.getconslist",ccb);
 	}
 
-	public int getconslistno() {
-		return sqlSession.selectOne("Han.getconslistno");
+	public int getconslistno(HConsConditionBean ccb) {
+		return sqlSession.selectOne("Han.getconslistno",ccb);
 	}
 
 	public HConsBean getconsdetail(int cons_no) {
@@ -93,5 +94,9 @@ public class HDAOImpl {
 
 	public HConsUpgradeBean consupdatereturn(HConsUpgradeBean cub) {
 		return sqlSession.selectOne("Han.consupdatereturn",cub.getCons_no());
+	}
+
+	public void insertCat(HAucBean ab) {
+		sqlSession.insert("insertCat", ab);
 	}
 }

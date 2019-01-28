@@ -33,3 +33,13 @@ select cons_commit,cons_title from consignment;
 select * from consignment order by cons_no desc ;
 
 update consignment set auc_price=160000 where cons_no=14;
+
+drop table auction_category;
+create table auction_category(
+	auc_no			number,
+	auc_category1	varchar2(30),
+	auc_category2	varchar2(30),
+	auc_category3	varchar2(30)
+)
+
+
